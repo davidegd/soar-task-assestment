@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import type { Card, Transaction, User, Contact, ChartData } from "@/types";
 import {
   fetchCards,
@@ -11,6 +10,7 @@ import {
   fetchContacts,
   fetchChartData,
 } from "@/services/api";
+import { toast } from "sonner";
 
 type AppContextType = {
   user: User | null;
@@ -46,7 +46,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,11 +72,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setError(null);
       } catch (err) {
         setError("Failed to load data. Please try again later.");
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load data. Please try again later.",
-        });
+        toast.error("Failed to load data. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -91,16 +86,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setUser((prev) => (prev ? { ...prev, ...userData } : null));
 
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been updated successfully.",
-      });
+      toast.success("Your profile has been updated successfully.");
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-      });
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -109,16 +97,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const transferMoney = async (contactId: string, amount: number) => {
     try {
       setIsLoading(true);
-      toast({
-        title: "Transfer Successful",
-        description: `$${amount.toFixed(2)} has been sent successfully.`,
-      });
+      toast.success(`$${amount.toFixed(2)} has been sent successfully.`);
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to transfer money. Please try again.",
-      });
+      toast.error("Failed to transfer money. Please try again.");
     } finally {
       setIsLoading(false);
     }

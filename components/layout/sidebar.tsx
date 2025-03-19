@@ -18,74 +18,16 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { getNavigationItems } from "./navigation-items";
 
 interface SidebarProps {
   className?: string;
 }
 
-function getNavItems(pathname: string) {
-  return [
-    {
-      title: "Dashboard",
-      href: "/dashboard",
-      icon: <Home className="h-5 w-5" />,
-      active: pathname === "/dashboard",
-    },
-    {
-      title: "Transactions",
-      href: "/transactions",
-      icon: <FileText className="h-5 w-5" />,
-      active: pathname === "/transactions",
-    },
-    {
-      title: "Accounts",
-      href: "/accounts",
-      icon: <Users className="h-5 w-5" />,
-      active: pathname === "/accounts",
-    },
-    {
-      title: "Investments",
-      href: "/investments",
-      icon: <BarChart3 className="h-5 w-5" />,
-      active: pathname === "/investments",
-    },
-    {
-      title: "Credit Cards",
-      href: "/cards",
-      icon: <CreditCard className="h-5 w-5" />,
-      active: pathname === "/cards",
-    },
-    {
-      title: "Loans",
-      href: "/loans",
-      icon: <Landmark className="h-5 w-5" />,
-      active: pathname === "/loans",
-    },
-    {
-      title: "Services",
-      href: "/services",
-      icon: <CheckSquare className="h-5 w-5" />,
-      active: pathname === "/services",
-    },
-    {
-      title: "My Privileges",
-      href: "/privileges",
-      icon: <Wallet className="h-5 w-5" />,
-      active: pathname === "/privileges",
-    },
-    {
-      title: "Setting",
-      href: "/settings",
-      icon: <Settings className="h-5 w-5" />,
-      active: pathname === "/settings",
-    },
-  ];
-}
-
 export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
 
-  const navItems = getNavItems(pathname);
+  const navItems = getNavigationItems(pathname);
 
   return (
     <div
@@ -136,7 +78,7 @@ export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  const navItems = getNavItems(pathname);
+  const navItems = getNavigationItems(pathname);
 
   return (
     <div className="md:hidden">
@@ -173,9 +115,7 @@ export function MobileNav() {
               {navItems.map((item) => (
                 <div className="flex" key={item.href}>
                   {item.active ? (
-                    <div className="w-2.5 h-10 bg-primary rounded-lg l-0 float-left ">
-                      {" "}
-                    </div>
+                    <div className="w-2.5 h-10 bg-primary rounded-lg "> </div>
                   ) : (
                     <div className="w-1 h-10" />
                   )}

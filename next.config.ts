@@ -20,7 +20,7 @@ const nextConfig = {
 
 mergeConfig(nextConfig, userConfig);
 
-function mergeConfig(nextConfig, userConfig) {
+function mergeConfig(nextConfig: any, userConfig: any) {
   if (!userConfig) {
     return;
   }

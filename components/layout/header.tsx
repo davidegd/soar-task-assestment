@@ -4,7 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bell, MoonIcon, Settings, SunIcon, UserIcon } from "lucide-react";
+import {
+  Bell,
+  MoonIcon,
+  SearchIcon,
+  Settings,
+  SunIcon,
+  UserIcon,
+} from "lucide-react";
 import { MobileNav } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +45,7 @@ export function Header({ title }: HeaderProps) {
     })();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between  bg-background px-4 md:px-6">
       <div className="flex items-center gap-2 w-1/2 md:w-1/4">
         <MobileNav />
         <h1 className="text-xl font-semibold">{pageTitle}</h1>
@@ -47,22 +54,8 @@ export function Header({ title }: HeaderProps) {
       <div className="flex items-center gap-4 justify-end w-3/4 ">
         <div className="hidden md:flex flex-1 items-center justify-end mr-4 ">
           <div className="w-full max-w-md">
-            <div className="relative">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
+            <div className="relative flex items-center">
+              <SearchIcon className="absolute ml-1" />
               <Input
                 type="search"
                 placeholder="Search for something"
