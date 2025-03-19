@@ -31,6 +31,10 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --card-dark: 225 25% 25%;
+    --card-light: 0 0% 100%;
   }
   .dark {
     --background: 222.2 14% 11%;
@@ -54,5 +58,41 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 222.2 84% 4.9%;
+  }
+}
+
+.card-dark {
+  background-color: hsl(var(--card-dark));
+  color: white;
+}
+
+.card-light {
+  background-color: hsl(var(--card-light));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+}
+
+@layer utilities {
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-center {
+    scroll-snap-align: center;
+  }
+
+  .snap-mandatory {
+    --tw-scroll-snap-strictness: mandatory;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
