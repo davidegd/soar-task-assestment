@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Open Sans", Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
