@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 @layer utilities {
