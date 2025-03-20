@@ -1,4 +1,5 @@
 import { Card, Contact, Transaction, User } from "@/types";
+import UserAvatar from "@/assets/images/user.png";
 
 export const mockCards: Card[] = [
   {
@@ -53,7 +54,7 @@ export const mockUser: User = {
   name: "Charlene Reed",
   username: "Charlene Reed",
   email: "charlenereed@gmail.com",
-  avatar: "/placeholder.svg?height=100&width=100",
+  avatar: UserAvatar as unknown as string,
   dateOfBirth: "25 January 1990",
   presentAddress: "San Jose, California, USA",
   permanentAddress: "San Jose, California, USA",

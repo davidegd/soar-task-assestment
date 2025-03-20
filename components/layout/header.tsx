@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useApp } from "@/context/app-context";
 import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface HeaderProps {
   title?: string;
@@ -43,7 +44,6 @@ export function Header({ title }: HeaderProps) {
       if (pathname === "/settings") return "Setting";
       return pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2);
     })();
-
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between  bg-background px-4 md:px-6">
       <div className="flex items-center gap-2 w-1/2 md:w-1/4">
@@ -92,8 +92,14 @@ export function Header({ title }: HeaderProps) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
-                <div className="h-12 w-14 items-center justify-center flex rounded-full bg-background">
-                  <UserIcon className="text-primary w-10 h-10" />
+                <div className="h-11 w-10 items-center justify-center flex rounded-full ">
+                  <Image
+                    src={user?.avatar as unknown as string}
+                    alt="User avatar"
+                    className="rounded-full w-11 h-9"
+                    width={1}
+                    height={1}
+                  />
                 </div>
 
                 <span className="sr-only">User menu</span>

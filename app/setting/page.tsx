@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useApp } from "@/context/app-context";
 import type { User } from "@/types";
-import UserAvatar from "@/assets/images/user.png";
 import {
   Popover,
   PopoverContent,
@@ -20,6 +19,7 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { fetchUser } from "@/services/api";
+import { EditableAvatar } from "@/components/settings/edit-avatar";
 
 const ActiveTabClassName =
   "text-muted-foreground  data-[state=active]:border-b-2 data-[state=active]:text-primary data-[state=active]:!border-primary data-[state=active]:!border-t-0 data-[state=active]:!border-r-0 data-[state=active]:!border-l-0  data-[state=active]:!rounded-none data-[state=active]:!bg-transparent";
@@ -64,7 +64,7 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto max-w-full bg-background p-8 rounded-2xl">
       <Tabs defaultValue="edit-profile">
-        <TabsList className="grid w-full grid-cols-8 !bg-transparent justify-start">
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-8 !bg-transparent justify-start">
           <TabsTrigger value="edit-profile" className={ActiveTabClassName}>
             Edit Profile
           </TabsTrigger>
@@ -79,27 +79,19 @@ export default function SettingsPage() {
         <TabsContent value="edit-profile" className="mt-0 pt-0 gap-0">
           <form
             onSubmit={handleSubmit}
-            className=" rounded-b-xl bg-transparent p-6 flex gap-6"
+            className=" rounded-b-xl bg-transparent p-6 md:flex justify-center  gap-6"
           >
-            <div className=" relative">
-              <div className="relative h-20 w-20 overflow-hidden rounded-full border-4 border-background -mb-6">
-                <Image
-                  src={UserAvatar}
-                  alt={user.name}
-                  width={85}
-                  height={85}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              <Button
-                variant="default"
-                size="icon"
-                className="absolute right-0 h-6 w-6 rounded-full"
-              >
-                <Pencil className="h-4 w-4" />
-                <span className="sr-only">Change avatar</span>
-              </Button>
+            <div className="mb-8 flex md:inline-block justify-center">
+              <EditableAvatar
+                src={formData.avatar as unknown as string}
+                alt={user.name}
+                onImageChange={async (file) => {
+                  setFormData({
+                    ...formData,
+                    avatar: URL.createObjectURL(file),
+                  });
+                }}
+              />
             </div>
             <div className="w-full justify-between flex flex-col gap-x-4">
               <div className="flex justify-center"></div>
