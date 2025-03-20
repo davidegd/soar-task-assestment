@@ -85,13 +85,13 @@ export const mockChartData = {
     labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
     datasets: [
       {
-        label: "Deposit",
-        data: [250, 100, 300, 250, 200, 220, 320],
+        label: "Withdraw",
+        data: [300, 150, 400, 250, 200, 250, 320, 220],
         backgroundColor: "#4F46E5",
       },
       {
-        label: "Withdraw",
-        data: [400, 350, 320, 300, 150, 350, 400],
+        label: "Deposit",
+        data: [450, 350, 300, 350, 150, 350, 400, 500],
         backgroundColor: "#1F2937",
       },
     ],
@@ -111,7 +111,7 @@ export const mockChartData = {
     datasets: [
       {
         label: "Balance",
-        data: [100, 300, 450, 700, 300, 400, 600],
+        data: [100, 500, 300, 600, 800, 300, 400, 600, 800],
         borderColor: "#4F46E5",
         backgroundColor: "rgba(79, 70, 229, 0.1)",
         fill: true,
