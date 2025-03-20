@@ -26,12 +26,6 @@ const customJestConfig = {
       statements: 70,
     },
   },
-  transform:
-    process.env.CI === "true"
-      ? {
-          "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
-        }
-      : undefined,
 };
 
 module.exports = createJestConfig(customJestConfig);
