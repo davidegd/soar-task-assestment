@@ -55,9 +55,9 @@ export function EditableAvatar({
       setIsLoading(true);
       try {
         await onImageChange(file);
-        toast.success("Profile picture updated");
+        toast.success("Profile picture loaded successfully");
       } catch (error) {
-        toast.error("Failed to update profile picture");
+        toast.error("Failed to load profile picture");
         console.error("Error updating profile picture:", error);
       } finally {
         setIsLoading(false);
@@ -81,8 +81,8 @@ export function EditableAvatar({
         <Image
           src={src ?? UserAvatarPlaceholder}
           alt={alt}
-          width={size}
-          height={size}
+          width={size ?? 128}
+          height={size ?? 128}
           className="h-full w-full object-cover"
         />
 

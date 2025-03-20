@@ -20,6 +20,15 @@ export const mockCards: Card[] = [
     type: "visa",
     isDark: false,
   },
+  {
+    id: "3",
+    cardNumber: "4576 9876 3412 1234",
+    cardHolder: "Eddy Cusuma",
+    validThru: "12/25",
+    balance: 3456,
+    type: "visa",
+    isDark: false,
+  },
 ];
 
 export const mockTransactions: Transaction[] = [

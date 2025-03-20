@@ -34,49 +34,47 @@ export function Header({ title }: HeaderProps) {
     title ||
     (() => {
       if (pathname === "/dashboard") return "Overview";
-      if (pathname === "/settings") return "Setting";
       return pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2);
     })();
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between  bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-20 w-full items-center justify-between  bg-background px-4 md:px-6">
       <div className="flex items-center gap-2 w-1/2 md:w-1/4">
         <MobileNav />
-        <h1 className="text-xl font-semibold">{pageTitle}</h1>
+        <h1 className="text-2xl font-semibold  text-secondary">{pageTitle}</h1>
       </div>
 
-      <div className="flex items-center gap-4 justify-end w-3/4 ">
-        <div className="hidden md:flex flex-1 items-center justify-end mr-4 ">
-          <div className="w-full max-w-md">
+      <div className="flex items-center gap-4 justify-end w-3/4 space-x-6">
+        <div className="hidden md:flex flex-1 items-center justify-end ">
+          <div className="">
             <div className="relative flex items-center">
-              <SearchIcon className="absolute mx-2 h-4 w-4" />
+              <SearchIcon className="absolute ml-4 h-4 w-4 text-secondary" />
               <Input
                 type="search"
                 placeholder="Search for something"
-                className="w-full pl-8 rounded-2xl"
+                className="w-60 pl-10 rounded-full text-secondary h-12 border-none bg-muted"
               />
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center space-x-2">
+        <div className="flex justify-between items-center space-x-6">
           <Button
-            variant="secondary"
-            size="icon"
-            className="relative hidden md:flex rounded-full items-center"
+            variant="ghost"
+            className="relative hidden md:flex rounded-full items-center bg-muted w-11 h-11"
+            size="sm"
           >
-            <Link href="/setting" className="bg-transparent">
-              <Settings className=" h-4 w-4" />
+            <Link href="/settings" className="bg-transparent">
+              <Settings className=" h-16 w-auto text-secondary" />
             </Link>
           </Button>
-
           <Button
-            variant="secondary"
-            size="icon"
-            className="relative hidden md:flex rounded-full"
+            variant="ghost"
+            className="relative hidden md:flex rounded-full items-center bg-muted w-11 h-11"
+            size="sm"
           >
-            <Bell className="h-5 w-5" />
+            <Bell width={40} height={40} className="text-blue-500 " />
             {notifications > 0 && (
-              <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-destructive-foreground">
-                {notifications}
+              <span className="absolute right-3 top-3 flex h-2 w-2 items-center justify-center rounded-full bg-transparent border border-blue-500 text-xs font-medium">
+                {""}
               </span>
             )}
             <span className="sr-only">Notifications</span>
@@ -84,22 +82,18 @@ export function Header({ title }: HeaderProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <div className="h-11 w-10 items-center justify-center flex rounded-full ">
-                  <Image
-                    src={
-                      (user?.avatar as unknown as string) ??
-                      UserAvatarPlaceholder
-                    }
-                    alt="User avatar"
-                    className="rounded-full w-11 h-9"
-                    width={1}
-                    height={1}
-                  />
-                </div>
-
+              <div className="items-center  justify-center flex rounded-full ring:none focus-visible:ring-0 focus-visible:border-none hover:cursor-pointer hover:opacity-90">
+                <Image
+                  src={
+                    (user?.avatar as unknown as string) ?? UserAvatarPlaceholder
+                  }
+                  alt="User avatar"
+                  className="rounded-full w-12 h-12 object-cover"
+                  width={148}
+                  height={48}
+                />
                 <span className="sr-only">User menu</span>
-              </Button>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-background">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>

@@ -270,7 +270,7 @@ export default function SettingsPage() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-32 rounded-xl"
+                  className="w-36 rounded-xl py-6"
                 >
                   {isLoading ? "Saving..." : "Save"}
                 </Button>

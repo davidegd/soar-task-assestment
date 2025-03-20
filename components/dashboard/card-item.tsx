@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import CardDarkLogo from "@/assets/images/card.png";
 import CardLightLogo from "@/assets/images/card-white.png";
 import Image from "next/image";
+import CardChip from "@/assets/images/card-chip.svg";
 interface CardItemProps {
   card: CardType;
   className?: string;
@@ -14,22 +15,30 @@ export function CardItem({ card, className }: CardItemProps) {
   const isDarkMode = theme === "dark";
 
   const cardClass = cn(
-    "relative rounded-2xl p-4 text-white shadow-sm transition-all duration-200 min-h-60 max-h-64 flex flex-col  justify-between",
+    "relative rounded-3xl  text-white shadow-sm transition-all duration-200 min-h-60 max-h-64 flex flex-col  justify-between",
     {
       "card-dark": card.isDark || isDarkMode,
-      "card-light": !card.isDark && !isDarkMode,
+      "card-light": !card.isDark,
     },
     className
   );
 
   return (
     <div className={cardClass}>
-      <div className="mb-6">
-        <div className="text-sm opacity-80">Balance</div>
-        <div className="text-2xl font-bold">{formatAmount(card.balance)}</div>
+      <div className="mb-6 justify-between items-end flex py-4 px-8">
+        <div>
+          <div className="text-sm opacity-80">Balance</div>
+          <div className="text-2xl font-bold">{formatAmount(card.balance)}</div>
+        </div>
+
+        <Image
+          src={CardChip}
+          alt="card-chip"
+          className={`h-8 w-auto  ${!card.isDark && "brightness-50"}`}
+        />
       </div>
 
-      <div className="mb-6 flex justify-between text-sm">
+      <div className="mb-6 flex justify-between text-sm px-8 ">
         <div>
           <div className="opacity-80">CARD HOLDER</div>
           <div>{card.cardHolder}</div>
@@ -40,14 +49,14 @@ export function CardItem({ card, className }: CardItemProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="text-lg font-medium">
+      <div className="flex items-center justify-between border-border border-t px-8 py-2 ">
+        <div className="text-xl font-medium">
           {maskCardNumber(card.cardNumber)}
         </div>
         <Image
           src={card.isDark ? CardDarkLogo : CardLightLogo}
           alt="card-logo"
-          className="h-auto w-12"
+          className="h-auto w-14"
         />
       </div>
     </div>
