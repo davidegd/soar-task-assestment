@@ -23,7 +23,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.className}>
-        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          enableSystem
+          disableTransitionOnChange
+          defaultTheme="light"
+        >
           <AppProvider>
             <div className="flex h-screen p-0">
               <Suspense fallback={<div className="h-screen w-64 animate-pulse bg-background" />}>

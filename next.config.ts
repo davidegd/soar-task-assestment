@@ -2,7 +2,6 @@ const userConfig = undefined;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: true,
   compiler: {
     ...(process.env.CI !== "true" && {
       removeConsole:
@@ -36,7 +35,6 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "2mb",
     },
-    webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
@@ -75,35 +73,6 @@ const nextConfig = {
   },
   rewrites: async () => {
     return [];
-  },
-  webpack: (
-    config: { optimization: { splitChunks: { cacheGroups: any } }; plugins: any[] },
-    { dev, isServer }: any
-  ) => {
-    if (!dev) {
-      config.optimization.splitChunks.cacheGroups = {
-        ...config.optimization.splitChunks.cacheGroups,
-        styles: {
-          name: "styles",
-          test: /\.(css|scss)$/,
-          chunks: "all",
-          enforce: true,
-        },
-      };
-
-      if (isServer && process.env.ANALYZE === "true") {
-        const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: "server",
-            analyzerPort: 8888,
-            openAnalyzer: true,
-          })
-        );
-      }
-    }
-
-    return config;
   },
 };
 

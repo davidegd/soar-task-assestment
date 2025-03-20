@@ -57,27 +57,50 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto max-w-full rounded-2xl bg-background p-8">
       <Tabs defaultValue="edit-profile">
-        <TabsList className="grid w-full grid-cols-3 justify-start !bg-transparent md:grid-cols-8">
-          <TabsTrigger value="edit-profile" className={ActiveTabClassName}>
+        <TabsList
+          className="grid w-full grid-cols-3 justify-start !bg-transparent md:grid-cols-8"
+          role="tablist"
+          aria-label="Settings Tabs"
+        >
+          <TabsTrigger
+            value="edit-profile"
+            className={ActiveTabClassName}
+            role="tab"
+            aria-selected="true"
+            tabIndex={0}
+          >
             Edit Profile
           </TabsTrigger>
-          <TabsTrigger value="preferences" className={ActiveTabClassName}>
+          <TabsTrigger
+            value="preferences"
+            className={ActiveTabClassName}
+            role="tab"
+            aria-selected="false"
+            tabIndex={-1}
+          >
             Preferences
           </TabsTrigger>
-          <TabsTrigger value="security" className={ActiveTabClassName}>
+          <TabsTrigger
+            value="security"
+            className={ActiveTabClassName}
+            role="tab"
+            aria-selected="false"
+            tabIndex={-1}
+          >
             Security
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="edit-profile" className="mt-0 gap-0 pt-0">
+        <TabsContent value="edit-profile" className="mt-0 gap-0 pt-0" role="tabpanel">
           <form
             onSubmit={handleSubmit}
-            className=" justify-center gap-6 rounded-b-xl bg-transparent p-6  md:flex"
+            className="justify-center gap-6 rounded-b-xl bg-transparent p-6 md:flex"
+            aria-labelledby="edit-profile-tab"
           >
             <div className="mb-8 flex justify-center md:inline-block">
               <EditableAvatar
                 src={formData.avatar as unknown as string}
-                alt={user.name}
+                alt={`${user.name}'s avatar`}
                 onImageChange={async (file) => {
                   setFormData({
                     ...formData,
@@ -87,8 +110,6 @@ export default function SettingsPage() {
               />
             </div>
             <div className="flex w-full flex-col justify-between gap-x-4">
-              <div className="flex justify-center"></div>
-
               <div className="mb-6 grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium">
@@ -100,6 +121,7 @@ export default function SettingsPage() {
                     value={formData.name || ""}
                     onChange={handleChange}
                     placeholder="Enter your name"
+                    aria-required="true"
                   />
                 </div>
 
@@ -113,6 +135,7 @@ export default function SettingsPage() {
                     value={formData.username || ""}
                     onChange={handleChange}
                     placeholder="Enter your username"
+                    aria-required="true"
                   />
                 </div>
 
@@ -127,6 +150,7 @@ export default function SettingsPage() {
                     value={formData.email || ""}
                     onChange={handleChange}
                     placeholder="Enter your email"
+                    aria-required="true"
                   />
                 </div>
 
@@ -141,23 +165,30 @@ export default function SettingsPage() {
                     value="**********"
                     onChange={handleChange}
                     placeholder="Enter your password"
+                    aria-required="true"
                   />
                 </div>
 
-                <div className="flex flex-col space-y-2 ">
+                <div className="flex flex-col space-y-2">
                   <label htmlFor="dateOfBirth" className="text-sm font-medium">
                     Date of Birth
                   </label>
                   <Popover>
-                    <PopoverTrigger asChild className="w-full">
+                    <PopoverTrigger
+                      asChild
+                      className="w-full"
+                      aria-haspopup="dialog"
+                      aria-expanded="false"
+                      aria-label="Select your date of birth"
+                    >
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full items-center justify-between text-left font-normal ",
+                          "w-full items-center justify-between text-left font-normal",
                           !formData.dateOfBirth && "text-muted-foreground"
                         )}
                       >
-                        <div className="flex gap-x-4 ">
+                        <div className="flex gap-x-4">
                           <CalendarIcon />
                           {formData.dateOfBirth ? (
                             format(new Date(formData.dateOfBirth), "PPP")
@@ -251,7 +282,13 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex justify-end">
-                <Button type="submit" disabled={isLoading} className="w-36 rounded-xl py-6">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-36 rounded-xl py-6"
+                  aria-busy={isLoading}
+                  aria-label="Save profile changes"
+                >
                   {isLoading ? "Saving..." : "Save"}
                 </Button>
               </div>
@@ -259,15 +296,15 @@ export default function SettingsPage() {
           </form>
         </TabsContent>
 
-        <TabsContent value="preferences" className="mt-0">
-          <div className="rounded-b-xl  bg-background p-6 shadow-sm">
+        <TabsContent value="preferences" className="mt-0" role="tabpanel">
+          <div className="rounded-b-xl bg-background p-6 shadow-sm">
             <div className="flex h-40 items-center justify-center">
               <p className="text-muted-foreground">Preference settings will be available soon.</p>
             </div>
           </div>
         </TabsContent>
 
-        <TabsContent value="security" className="mt-0">
+        <TabsContent value="security" className="mt-0" role="tabpanel">
           <div className="rounded-b-xl bg-background p-6 shadow-sm">
             <div className="flex h-40 items-center justify-center">
               <p className="text-muted-foreground">Security settings will be available soon.</p>

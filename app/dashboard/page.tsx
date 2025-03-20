@@ -31,29 +31,29 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-8">
+      <div className="space-y-8" aria-busy="true" aria-live="polite">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-8 w-60" />
-          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-8 w-60" aria-hidden="true" />
+          <Skeleton className="h-8 w-40" aria-hidden="true" />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Skeleton className="h-48 rounded-xl" />
-          <Skeleton className="h-48 rounded-xl" />
+          <Skeleton className="h-48 rounded-xl" aria-hidden="true" />
+          <Skeleton className="h-48 rounded-xl" aria-hidden="true" />
         </div>
 
         <div className="space-y-4">
-          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-8 w-40" aria-hidden="true" />
           <div className="space-y-2">
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" aria-hidden="true" />
+            <Skeleton className="h-16 w-full" aria-hidden="true" />
+            <Skeleton className="h-16 w-full" aria-hidden="true" />
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <Skeleton className="h-80 rounded-xl" />
-          <Skeleton className="h-80 rounded-xl" />
+          <Skeleton className="h-80 rounded-xl" aria-hidden="true" />
+          <Skeleton className="h-80 rounded-xl" aria-hidden="true" />
         </div>
       </div>
     );
@@ -61,45 +61,82 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-6 md:grid md:grid-cols-2 md:gap-8 md:space-y-0 lg:grid-cols-3">
-        <div className=" col-span-2 flex-col">
+        <div className="col-span-2 flex-col">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-secondary">My Cards</h2>
+            <h2 className="text-xl font-semibold text-secondary" id="my-cards-heading">
+              My Cards
+            </h2>
             <Link
               href="/cards"
-              className="flex items-center gap-1 text-sm font-medium  text-secondary hover:text-muted-foreground"
+              className="flex items-center gap-1 text-sm font-medium text-secondary hover:text-muted-foreground"
+              aria-label="See all cards"
             >
               See All
             </Link>
           </div>
-          <div className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto py-3 pr-4">
+          <div
+            className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto py-3 pr-4"
+            role="list"
+            aria-labelledby="my-cards-heading"
+          >
             {cards.map((card) => (
-              <div key={card.id} className="w-10/12 flex-shrink-0  snap-center md:w-1/2">
+              <div
+                key={card.id}
+                className="w-10/12 flex-shrink-0 snap-center md:w-1/2"
+                role="listitem"
+              >
                 <MemoizedCardItem key={card.id} card={card} />
               </div>
             ))}
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold  text-secondary">Recent Transaction</h2>
-          <div className="flex min-h-60 flex-col justify-between  rounded-2xl bg-background  px-4 py-2.5  shadow-sm">
+          <h2 className="text-xl font-semibold text-secondary" id="recent-transactions-heading">
+            Recent Transactions
+          </h2>
+          <div
+            className="flex min-h-60 flex-col justify-between rounded-2xl bg-background px-4 py-2.5 shadow-sm"
+            role="list"
+            aria-labelledby="recent-transactions-heading"
+          >
             {transactions.map((transaction) => (
-              <MemoizedTransactionItem key={transaction.id} transaction={transaction} />
+              <MemoizedTransactionItem
+                key={transaction.id}
+                transaction={transaction}
+                role="listitem"
+              />
             ))}
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
-          <h2 className="text-xl font-semibold  text-secondary">Weekly Activity</h2>
-          <div className="rounded-2xl  bg-background p-4 shadow-sm ">
+          <h2 className="text-xl font-semibold text-secondary" id="weekly-activity-heading">
+            Weekly Activity
+          </h2>
+          <div
+            className="rounded-2xl bg-background p-4 shadow-sm"
+            role="region"
+            aria-labelledby="weekly-activity-heading"
+          >
             <Suspense fallback={<ChartFallback />}>
-              <DynamicWeeklyActivityChart data={weeklyActivityData} className="h-64" />
+              <DynamicWeeklyActivityChart
+                data={weeklyActivityData}
+                className="h-64"
+                aria-label="Weekly activity chart"
+              />
             </Suspense>
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold  text-secondary">Expense Statistics</h2>
-          <div className="flex  flex-col items-center space-x-8 rounded-2xl bg-background p-4 shadow-sm md:flex-row">
+          <h2 className="text-xl font-semibold text-secondary" id="expense-statistics-heading">
+            Expense Statistics
+          </h2>
+          <div
+            className="flex flex-col items-center space-x-8 rounded-2xl bg-background p-4 shadow-sm md:flex-row"
+            role="region"
+            aria-labelledby="expense-statistics-heading"
+          >
             <div className="my-2 flex flex-col gap-2 text-sm">
               {expenseStatisticsData.labels.map((label, index) => (
                 <div key={label} className="flex items-center gap-2">
@@ -112,6 +149,7 @@ export default function DashboardPage() {
                         ? expenseStatisticsData.datasets[0].backgroundColor[index]
                         : undefined,
                     }}
+                    aria-hidden="true"
                   />
                   <span>{label}</span>
                   <span className="font-medium">
@@ -122,7 +160,11 @@ export default function DashboardPage() {
             </div>
             <div className="relative flex h-64">
               <Suspense fallback={<ChartFallback />}>
-                <DynamicExpenseStatisticsChart data={expenseStatisticsData} className="h-64" />
+                <DynamicExpenseStatisticsChart
+                  data={expenseStatisticsData}
+                  className="h-64"
+                  aria-label="Expense statistics chart"
+                />
               </Suspense>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="-white flex flex-col items-center justify-center rounded-full bg-background p-4 shadow-sm">
@@ -137,17 +179,33 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold  text-secondary">Quick Transfer</h2>
-          <div className="rounded-2xl  bg-background p-4 shadow-sm">
+          <h2 className="text-xl font-semibold text-secondary" id="quick-transfer-heading">
+            Quick Transfer
+          </h2>
+          <div
+            className="rounded-2xl bg-background p-4 shadow-sm"
+            role="region"
+            aria-labelledby="quick-transfer-heading"
+          >
             <QuickTransfer contacts={contacts} />
           </div>
         </div>
 
         <div className="col-span-2 space-y-4">
-          <h2 className="text-xl font-semibold  text-secondary">Balance History</h2>
-          <div className="rounded-2xl  bg-background p-4 shadow-sm">
+          <h2 className="text-xl font-semibold text-secondary" id="balance-history-heading">
+            Balance History
+          </h2>
+          <div
+            className="rounded-2xl bg-background p-4 shadow-sm"
+            role="region"
+            aria-labelledby="balance-history-heading"
+          >
             <Suspense fallback={<ChartFallback />}>
-              <DynamicBalanceHistoryChart data={balanceHistoryData} className="h-64" />
+              <DynamicBalanceHistoryChart
+                data={balanceHistoryData}
+                className="h-64"
+                aria-label="Balance history chart"
+              />
             </Suspense>
           </div>
         </div>
