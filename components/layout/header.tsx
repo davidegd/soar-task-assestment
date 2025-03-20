@@ -55,7 +55,7 @@ export function Header({ title }: HeaderProps) {
         <div className="hidden md:flex flex-1 items-center justify-end mr-4 ">
           <div className="w-full max-w-md">
             <div className="relative flex items-center">
-              <SearchIcon className="absolute ml-1" />
+              <SearchIcon className="absolute mx-2 h-4 w-4" />
               <Input
                 type="search"
                 placeholder="Search for something"
@@ -70,7 +70,7 @@ export function Header({ title }: HeaderProps) {
             size="icon"
             className="relative hidden md:flex rounded-full items-center"
           >
-            <Link href="/settings" className="bg-transparent">
+            <Link href="/setting" className="bg-transparent">
               <Settings className=" h-4 w-4" />
             </Link>
           </Button>
@@ -99,7 +99,7 @@ export function Header({ title }: HeaderProps) {
                 <span className="sr-only">User menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="bg-background">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
