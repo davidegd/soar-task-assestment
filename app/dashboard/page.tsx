@@ -6,6 +6,7 @@ import {
   DynamicExpenseStatisticsChart,
   DynamicWeeklyActivityChart,
 } from "@/components/dashboard/charts/dynamic-chart";
+import { QuickTransfer } from "@/components/dashboard/quick-transfer";
 import { TransactionItem } from "@/components/dashboard/transaction-item";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,6 +28,7 @@ export default function DashboardPage() {
     expenseStatisticsData,
     balanceHistoryData,
     isLoading,
+    contacts,
   } = useApp();
 
   if (isLoading) {
@@ -155,6 +157,9 @@ export default function DashboardPage() {
       <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Quick Transfer</h2>
+          <div className="rounded-2xl  bg-background p-4 shadow-sm">
+            <QuickTransfer contacts={contacts} />
+          </div>
         </div>
 
         <div className="space-y-4 col-span-2">

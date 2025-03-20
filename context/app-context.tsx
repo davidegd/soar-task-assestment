@@ -24,6 +24,7 @@ type AppContextType = {
   error: string | null;
   updateUserProfile: (userData: Partial<User>) => Promise<void>;
   transferMoney: (contactId: string, amount: number) => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -117,6 +118,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     error,
     updateUserProfile,
     transferMoney,
+    setUser,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
