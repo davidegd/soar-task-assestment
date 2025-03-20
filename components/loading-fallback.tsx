@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function LoadingFallback() {
   return (
-    <div className="space-y-8 w-full">
+    <div className="w-full space-y-8">
       <div className="flex items-center justify-between">
         <Skeleton className="h-8 w-60" />
         <Skeleton className="h-8 w-40" />
@@ -33,7 +33,7 @@ export function LoadingFallback() {
 
 export function CardLoadingFallback() {
   return (
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <Skeleton className="h-48 rounded-xl" />
       <Skeleton className="h-48 rounded-xl" />
       <Skeleton className="h-48 rounded-xl" />
@@ -43,8 +43,8 @@ export function CardLoadingFallback() {
 
 export function SettingsLoadingFallback() {
   return (
-    <div className="mx-auto max-w-full bg-background p-8 rounded-2xl">
-      <Skeleton className="h-10 w-64 mb-6" />
+    <div className="mx-auto max-w-full rounded-2xl bg-background p-8">
+      <Skeleton className="mb-6 h-10 w-64" />
       <div className="space-y-6">
         <div className="flex gap-4">
           <Skeleton className="h-32 w-32 rounded-full" />
@@ -60,7 +60,7 @@ export function SettingsLoadingFallback() {
           <Skeleton className="h-20 w-full" />
           <Skeleton className="h-20 w-full" />
         </div>
-        <Skeleton className="h-10 w-36 ml-auto" />
+        <Skeleton className="ml-auto h-10 w-36" />
       </div>
     </div>
   );

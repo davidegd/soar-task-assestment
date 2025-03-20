@@ -10,10 +10,7 @@ interface TransactionItemProps {
   className?: string;
 }
 
-export function TransactionItem({
-  transaction,
-  className,
-}: TransactionItemProps) {
+export function TransactionItem({ transaction, className }: TransactionItemProps) {
   const isPositive = transaction.amount > 0;
 
   const IconByTransaction: Record<TransactionIcon, ReactElement> = {
@@ -23,7 +20,7 @@ export function TransactionItem({
     default: <DollarSign className="h-5 w-5 text-gray-600" />,
   };
 
-  const BgByTransaction: Record<TransactionIcon, String> = {
+  const BgByTransaction: Record<TransactionIcon, string> = {
     "credit-card": "bg-yellow-100",
     paypal: "bg-blue-100",
     user: "bg-green-100",
@@ -43,12 +40,7 @@ export function TransactionItem({
         <div className="font-medium">{transaction.title}</div>
         <div className="text-sm text-muted-foreground">{transaction.date}</div>
       </div>
-      <div
-        className={cn(
-          "font-medium",
-          isPositive ? "text-green-600" : "text-red-600"
-        )}
-      >
+      <div className={cn("font-medium", isPositive ? "text-green-600" : "text-red-600")}>
         {isPositive ? "+" : ""}
         {transaction.amount.toLocaleString("en-US", {
           style: "currency",

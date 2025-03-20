@@ -11,10 +11,7 @@ interface BalanceHistoryChartProps {
   className?: string;
 }
 
-export function BalanceHistoryChart({
-  data,
-  className,
-}: BalanceHistoryChartProps) {
+export function BalanceHistoryChart({ data, className }: BalanceHistoryChartProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
@@ -37,8 +34,7 @@ export function BalanceHistoryChart({
             label: "Balance",
             data: data.datasets[0].data,
             borderColor: data.datasets[0].borderColor || "#4F46E5",
-            backgroundColor:
-              data.datasets[0].backgroundColor || "rgba(79, 70, 229, 0.1)",
+            backgroundColor: data.datasets[0].backgroundColor || "rgba(79, 70, 229, 0.1)",
             fill: true,
             tension: 0.4,
             borderWidth: 2,

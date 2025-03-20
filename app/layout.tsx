@@ -19,33 +19,21 @@ export const metadata: Metadata = {
   description: "A financial dashboard for managing your finances",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.className}>
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           <AppProvider>
             <div className="flex h-screen p-0">
-              <Suspense
-                fallback={
-                  <div className="w-64 h-screen bg-background animate-pulse" />
-                }
-              >
+              <Suspense fallback={<div className="h-screen w-64 animate-pulse bg-background" />}>
                 <Sidebar />
               </Suspense>
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <Suspense
-                  fallback={
-                    <div className="h-20 w-full bg-background animate-pulse" />
-                  }
-                >
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <Suspense fallback={<div className="h-20 w-full animate-pulse bg-background" />}>
                   <Header />
                 </Suspense>
-                <main className="flex-1 overflow-auto p-8 bg-mainBackground">
+                <main className="flex-1 overflow-auto bg-mainBackground p-8">
                   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
                 </main>
               </div>

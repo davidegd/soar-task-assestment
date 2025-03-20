@@ -38,28 +38,28 @@ export function Header({ title }: HeaderProps) {
     })();
   return (
     <header className="sticky top-0 z-30 flex h-20 w-full items-center justify-between  bg-background px-4 md:px-6">
-      <div className="flex items-center gap-2 w-1/2 md:w-1/4">
+      <div className="flex w-1/2 items-center gap-2 md:w-1/4">
         <MobileNav />
         <h1 className="text-2xl font-semibold  text-secondary">{pageTitle}</h1>
       </div>
 
-      <div className="flex items-center gap-4 justify-end w-3/4 space-x-6">
-        <div className="hidden md:flex flex-1 items-center justify-end ">
+      <div className="flex w-3/4 items-center justify-end gap-4 space-x-6">
+        <div className="hidden flex-1 items-center justify-end md:flex ">
           <div className="">
             <div className="relative flex items-center">
               <SearchIcon className="absolute ml-4 h-4 w-4 text-secondary" />
               <Input
                 type="search"
                 placeholder="Search for something"
-                className="w-60 pl-10 rounded-full text-secondary h-12 border-none bg-muted"
+                className="h-12 w-60 rounded-full border-none bg-muted pl-10 text-secondary"
               />
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center space-x-6">
+        <div className="flex items-center justify-between space-x-6">
           <Button
             variant="ghost"
-            className="relative hidden md:flex rounded-full items-center bg-muted w-11 h-11"
+            className="relative hidden h-11 w-11 items-center rounded-full bg-muted md:flex"
             size="sm"
           >
             <Link href="/settings" className="bg-transparent">
@@ -68,12 +68,12 @@ export function Header({ title }: HeaderProps) {
           </Button>
           <Button
             variant="ghost"
-            className="relative hidden md:flex rounded-full items-center bg-muted w-11 h-11"
+            className="relative hidden h-11 w-11 items-center rounded-full bg-muted md:flex"
             size="sm"
           >
             <Bell width={40} height={40} className="text-blue-500 " />
             {notifications > 0 && (
-              <span className="absolute right-3 top-3 flex h-2 w-2 items-center justify-center rounded-full bg-transparent border border-blue-500 text-xs font-medium">
+              <span className="absolute right-3 top-3 flex h-2 w-2 items-center justify-center rounded-full border border-blue-500 bg-transparent text-xs font-medium">
                 {""}
               </span>
             )}
@@ -82,13 +82,11 @@ export function Header({ title }: HeaderProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="items-center  justify-center flex rounded-full ring:none focus-visible:ring-0 focus-visible:border-none hover:cursor-pointer hover:opacity-90">
+              <div className="ring:none  flex items-center justify-center rounded-full hover:cursor-pointer hover:opacity-90 focus-visible:border-none focus-visible:ring-0">
                 <Image
-                  src={
-                    (user?.avatar as unknown as string) ?? UserAvatarPlaceholder
-                  }
+                  src={(user?.avatar as unknown as string) ?? UserAvatarPlaceholder}
                   alt="User avatar"
-                  className="rounded-full w-12 h-12 object-cover"
+                  className="h-12 w-12 rounded-full object-cover"
                   width={148}
                   height={48}
                 />
@@ -103,11 +101,9 @@ export function Header({ title }: HeaderProps) {
                   variant="ghost"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 >
-                  <p className="text-xs flex">
+                  <p className="flex text-xs">
                     {theme === "dark" ? <SunIcon /> : <MoonIcon />}{" "}
-                    <span className="ml-4">
-                      {theme === "dark" ? "Lights on" : "Lights off"}
-                    </span>
+                    <span className="ml-4">{theme === "dark" ? "Lights on" : "Lights off"}</span>
                   </p>
                 </Button>
               </DropdownMenuItem>

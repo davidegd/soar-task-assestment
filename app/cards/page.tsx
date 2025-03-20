@@ -21,9 +21,9 @@ export default function CardsPage() {
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-4">My Cards</h2>
+      <h2 className="mb-4 text-xl font-semibold">My Cards</h2>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3  ">
         {cards.map((card: Card) => (
           <MemoizedCardItem key={card.id} card={card} />
         ))}

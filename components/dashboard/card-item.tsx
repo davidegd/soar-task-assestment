@@ -25,7 +25,7 @@ export function CardItem({ card, className }: CardItemProps) {
 
   return (
     <div className={cardClass}>
-      <div className="mb-6 justify-between items-end flex py-4 px-8">
+      <div className="mb-6 flex items-end justify-between px-8 py-4">
         <div>
           <div className="text-sm opacity-80">Balance</div>
           <div className="text-2xl font-bold">{formatAmount(card.balance)}</div>
@@ -38,7 +38,7 @@ export function CardItem({ card, className }: CardItemProps) {
         />
       </div>
 
-      <div className="mb-6 flex justify-between text-sm px-8 ">
+      <div className="mb-6 flex justify-between px-8 text-sm ">
         <div>
           <div className="opacity-80">CARD HOLDER</div>
           <div>{card.cardHolder}</div>
@@ -49,10 +49,8 @@ export function CardItem({ card, className }: CardItemProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-border border-t px-8 py-2 ">
-        <div className="text-xl font-medium">
-          {maskCardNumber(card.cardNumber)}
-        </div>
+      <div className="flex items-center justify-between border-t border-border px-8 py-2 ">
+        <div className="text-xl font-medium">{maskCardNumber(card.cardNumber)}</div>
         <Image
           src={card.isDark ? CardDarkLogo : CardLightLogo}
           alt="card-logo"

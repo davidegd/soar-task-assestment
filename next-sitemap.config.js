@@ -13,5 +13,4 @@ module.exports = {
   exclude: ["/api/*", "/server-sitemap.xml"],
   generateIndexSitemap: false,
   outDir: "public",
-}
-
+};

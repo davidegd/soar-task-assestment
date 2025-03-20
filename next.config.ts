@@ -1,4 +1,4 @@
-const userConfig = undefined
+const userConfig = undefined;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -67,15 +67,18 @@ const nextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
   redirects: async () => {
-    return []
+    return [];
   },
   rewrites: async () => {
-    return []
+    return [];
   },
-  webpack: (config: { optimization: { splitChunks: { cacheGroups: any } }; plugins: any[] }, { dev, isServer }: any) => {
+  webpack: (
+    config: { optimization: { splitChunks: { cacheGroups: any } }; plugins: any[] },
+    { dev, isServer }: any
+  ) => {
     if (!dev) {
       config.optimization.splitChunks.cacheGroups = {
         ...config.optimization.splitChunks.cacheGroups,
@@ -85,29 +88,29 @@ const nextConfig = {
           chunks: "all",
           enforce: true,
         },
-      }
+      };
 
       if (isServer && process.env.ANALYZE === "true") {
-        const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
+        const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
         config.plugins.push(
           new BundleAnalyzerPlugin({
             analyzerMode: "server",
             analyzerPort: 8888,
             openAnalyzer: true,
-          }),
-        )
+          })
+        );
       }
     }
 
-    return config
+    return config;
   },
-}
+};
 
-mergeConfig(nextConfig, userConfig)
+mergeConfig(nextConfig, userConfig);
 
 function mergeConfig(nextConfig: any, userConfig: any) {
   if (!userConfig) {
-    return
+    return;
   }
 
   for (const key in userConfig) {
@@ -115,12 +118,11 @@ function mergeConfig(nextConfig: any, userConfig: any) {
       nextConfig[key] = {
         ...nextConfig[key],
         ...userConfig[key],
-      }
+      };
     } else {
-      nextConfig[key] = userConfig[key]
+      nextConfig[key] = userConfig[key];
     }
   }
 }
 
-export default nextConfig
-
+export default nextConfig;
