@@ -8,10 +8,8 @@ import {
 } from "@/components/dashboard/charts/dynamic-chart";
 import { QuickTransfer } from "@/components/dashboard/quick-transfer";
 import { TransactionItem } from "@/components/dashboard/transaction-item";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useApp } from "@/context/app-context";
-import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { memo, Suspense } from "react";
@@ -62,25 +60,22 @@ export default function DashboardPage() {
   }
   return (
     <div className="space-y-8">
-      <div className="md:grid space-y-6 md:space-y-0 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className=" flex-col  col-span-2">
+      <div className="md:grid space-y-6 md:space-y-0 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className=" flex-col col-span-2">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">My Cards</h2>
-            <Button variant="ghost" asChild size="sm">
-              <Link
-                href="/dashboard/cards"
-                className="flex items-center gap-1 text-sm font-medium text-primary"
-              >
-                See All
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            <h2 className="text-xl font-semibold text-secondary">My Cards</h2>
+            <Link
+              href="/cards"
+              className="flex items-center gap-1 text-sm font-medium  text-secondary hover:text-muted-foreground"
+            >
+              See All
+            </Link>
           </div>
-          <div className="flex overflow-x-auto py-3 gap-4 snap-x snap-mandatory ">
+          <div className="flex overflow-x-auto py-3 gap-4 snap-x snap-mandatory hide-scrollbar pr-4">
             {cards.map((card) => (
               <div
                 key={card.id}
-                className="snap-center flex-shrink-0 md:flex-shrink w-10/12 md:w-1/2"
+                className="snap-center flex-shrink-0  w-10/12 md:w-1/2"
               >
                 <MemoizedCardItem key={card.id} card={card} />
               </div>
@@ -88,7 +83,9 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold ">Recent Transaction</h2>
+          <h2 className="text-xl font-semibold  text-secondary">
+            Recent Transaction
+          </h2>
           <div className="flex flex-col justify-between py-2.5  rounded-2xl bg-background  px-4 shadow-sm  min-h-60">
             {transactions.map((transaction) => (
               <MemoizedTransactionItem
@@ -101,7 +98,9 @@ export default function DashboardPage() {
       </div>
       <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
-          <h2 className="text-xl font-semibold">Weekly Activity</h2>
+          <h2 className="text-xl font-semibold  text-secondary">
+            Weekly Activity
+          </h2>
           <div className="rounded-2xl  bg-background p-4 shadow-sm ">
             <Suspense fallback={<ChartFallback />}>
               <DynamicWeeklyActivityChart
@@ -112,7 +111,9 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Expense Statistics</h2>
+          <h2 className="text-xl font-semibold  text-secondary">
+            Expense Statistics
+          </h2>
           <div className="rounded-2xl  bg-background p-4 shadow-sm flex flex-col md:flex-row items-center space-x-8">
             <div className="my-2 flex flex-col gap-2 text-sm">
               {expenseStatisticsData.labels.map((label, index) => (
@@ -156,14 +157,18 @@ export default function DashboardPage() {
 
       <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Quick Transfer</h2>
+          <h2 className="text-xl font-semibold  text-secondary">
+            Quick Transfer
+          </h2>
           <div className="rounded-2xl  bg-background p-4 shadow-sm">
             <QuickTransfer contacts={contacts} />
           </div>
         </div>
 
         <div className="space-y-4 col-span-2">
-          <h2 className="text-xl font-semibold">Balance History</h2>
+          <h2 className="text-xl font-semibold  text-secondary">
+            Balance History
+          </h2>
           <div className="rounded-2xl  bg-background p-4 shadow-sm">
             <Suspense fallback={<ChartFallback />}>
               <DynamicBalanceHistoryChart

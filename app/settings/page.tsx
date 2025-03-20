@@ -3,8 +3,7 @@
 import type React from "react";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { CalendarIcon, ChevronDownIcon, Pencil } from "lucide-react";
+import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -167,7 +166,7 @@ export default function SettingsPage() {
                         <div className="flex gap-x-4 ">
                           <CalendarIcon />
                           {formData.dateOfBirth ? (
-                            format(formData.dateOfBirth, "PPP")
+                            format(new Date(formData.dateOfBirth), "PPP")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -189,7 +188,6 @@ export default function SettingsPage() {
                             dateOfBirth: e?.toLocaleString(),
                           })
                         }
-                        initialFocus
                         className="w-full"
                       />
                     </PopoverContent>
@@ -272,7 +270,7 @@ export default function SettingsPage() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-32 rounded-xl"
+                  className="w-36 rounded-xl py-6"
                 >
                   {isLoading ? "Saving..." : "Save"}
                 </Button>

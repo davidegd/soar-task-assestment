@@ -32,7 +32,7 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        " h-full flex-col bg-background shadow-sm hidden md:flex",
+        " h-full flex-col bg-background shadow-sm hidden md:flex border-r border-border",
         className
       )}
     >

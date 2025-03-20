@@ -32,7 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AppProvider>
-            <div className="flex h-screen">
+            <div className="flex h-screen p-0">
               <Sidebar />
               <div className="flex flex-col flex-1 overflow-hidden">
                 <Header />

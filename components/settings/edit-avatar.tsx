@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import UserAvatarPlaceholder from "@/assets/images/user.png";
 
 interface EditableAvatarProps {
   src: string;
@@ -55,9 +55,9 @@ export function EditableAvatar({
       setIsLoading(true);
       try {
         await onImageChange(file);
-        toast.success("Profile picture updated");
+        toast.success("Profile picture loaded successfully");
       } catch (error) {
-        toast.error("Failed to update profile picture");
+        toast.error("Failed to load profile picture");
         console.error("Error updating profile picture:", error);
       } finally {
         setIsLoading(false);
@@ -79,10 +79,10 @@ export function EditableAvatar({
         style={{ width: size, height: size }}
       >
         <Image
-          src={src}
+          src={src ?? UserAvatarPlaceholder}
           alt={alt}
-          width={size}
-          height={size}
+          width={size ?? 128}
+          height={size ?? 128}
           className="h-full w-full object-cover"
         />
 
