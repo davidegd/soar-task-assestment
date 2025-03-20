@@ -11,10 +11,7 @@ interface WeeklyActivityChartProps {
   className?: string;
 }
 
-export function WeeklyActivityChart({
-  data,
-  className,
-}: WeeklyActivityChartProps) {
+export function WeeklyActivityChart({ data, className }: WeeklyActivityChartProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 

@@ -42,32 +42,24 @@ describe("TransactionItem", () => {
   });
 
   it("applies green text for positive amounts", () => {
-    const { container } = render(
-      <TransactionItem transaction={depositTransaction} />
-    );
+    render(<TransactionItem transaction={depositTransaction} />);
     const amountElement = screen.getByText("+$2,500");
     expect(amountElement).toHaveClass("text-green-600");
   });
 
   it("applies red text for negative amounts", () => {
-    const { container } = render(
-      <TransactionItem transaction={withdrawalTransaction} />
-    );
+    render(<TransactionItem transaction={withdrawalTransaction} />);
     const amountElement = screen.getByText("-$850");
     expect(amountElement).toHaveClass("text-red-600");
   });
 
   it("renders correct icon for paypal transactions", () => {
-    const { container } = render(
-      <TransactionItem transaction={depositTransaction} />
-    );
+    const { container } = render(<TransactionItem transaction={depositTransaction} />);
     expect(container.querySelector(".bg-blue-100")).toBeInTheDocument();
   });
 
   it("renders correct icon for credit card transactions", () => {
-    const { container } = render(
-      <TransactionItem transaction={withdrawalTransaction} />
-    );
+    const { container } = render(<TransactionItem transaction={withdrawalTransaction} />);
     expect(container.querySelector(".bg-yellow-100")).toBeInTheDocument();
   });
 });

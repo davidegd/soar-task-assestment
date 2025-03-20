@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### Husky and Git Hooks
+
+Husky is used to run scripts before certain Git actions:
+
+- **pre-commit**: Runs lint-staged and type checking before each commit.
+- **pre-push**: Runs tests and build before each push.
+- **commit-msg**: Validates the format of the commit message.
+
+### Commit Conventions
+
+We use [Conventional Commits](https://www.conventionalcommits.org/) to standardize commit messages. Each message must follow the format:

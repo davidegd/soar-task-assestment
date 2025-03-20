@@ -1,6 +1,10 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 
+if (process.env.CI === "true") {
+  jest.mock("next/dist/compiled/next-server/pages.runtime.prod.js", () => ({}), { virtual: true });
+}
+
 jest.mock("next/navigation", () => ({
   useRouter: () => ({
     push: jest.fn(),

@@ -49,8 +49,6 @@ describe("RootLayout Component", () => {
     };
 
     expect(expectedMetadata.title).toBe("Soar Task - Financial Dashboard");
-    expect(expectedMetadata.description).toBe(
-      "A financial dashboard for managing your finances"
-    );
+    expect(expectedMetadata.description).toBe("A financial dashboard for managing your finances");
   });
 });

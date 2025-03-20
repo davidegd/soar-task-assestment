@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { CardItem } from "@/components/dashboard/card-item";
 import type { Card } from "@/types";

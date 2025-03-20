@@ -10,15 +10,11 @@ jest.mock("@/services/api", () => ({
   }),
   fetchCards: jest
     .fn()
-    .mockResolvedValue([
-      { id: "1", cardNumber: "3778341298764321", balance: 5756 },
-    ]),
+    .mockResolvedValue([{ id: "1", cardNumber: "3778341298764321", balance: 5756 }]),
   fetchTransactions: jest
     .fn()
     .mockResolvedValue([{ id: "1", title: "Test Transaction", amount: 500 }]),
-  fetchContacts: jest
-    .fn()
-    .mockResolvedValue([{ id: "1", name: "Livia Bator" }]),
+  fetchContacts: jest.fn().mockResolvedValue([{ id: "1", name: "Livia Bator" }]),
   fetchChartData: jest.fn().mockResolvedValue({
     weeklyActivity: { labels: [], datasets: [] },
     expenseStatistics: { labels: [], datasets: [] },
@@ -26,9 +22,7 @@ jest.mock("@/services/api", () => ({
   }),
 }));
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <AppProvider>{children}</AppProvider>
-);
+const wrapper = ({ children }: { children: ReactNode }) => <AppProvider>{children}</AppProvider>;
 
 describe("useApp hook", () => {
   it("loads data on initialization", async () => {
@@ -56,10 +50,10 @@ describe("useApp hook", () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     act(() => {
-      result.current.updateUserProfile({ name: "Updated Name" });
+      result.current.updateUserProfile({ name: "Charlene Ree" });
     });
 
-    expect(result.current.user?.name).toBe("Updated Name");
+    expect(result.current.user?.name).toBe("Charlene Ree");
   });
 
   it("handles transfer money function", async () => {
@@ -75,12 +69,8 @@ describe("useApp hook", () => {
   });
 
   it("handles API failure on initialization", async () => {
-    require("@/services/api").fetchUser.mockRejectedValue(
-      new Error("Failed to fetch user")
-    );
-    require("@/services/api").fetchCards.mockRejectedValue(
-      new Error("Failed to fetch cards")
-    );
+    require("@/services/api").fetchUser.mockRejectedValue(new Error("Failed to fetch user"));
+    require("@/services/api").fetchCards.mockRejectedValue(new Error("Failed to fetch cards"));
     require("@/services/api").fetchTransactions.mockRejectedValue(
       new Error("Failed to fetch transactions")
     );
@@ -99,8 +89,6 @@ describe("useApp hook", () => {
     expect(result.current.cards).toEqual([]);
     expect(result.current.transactions).toEqual([]);
     expect(result.current.contacts).toEqual([]);
-    expect(result.current.error).toBe(
-      "Failed to load data. Please try again later."
-    );
+    expect(result.current.error).toBe("Failed to load data. Please try again later.");
   });
 });

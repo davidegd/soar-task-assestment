@@ -6,6 +6,8 @@ import { AppProvider } from "@/context/app-context";
 import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "@/components/layout/sidebar";
+import { Suspense } from "react";
+import { LoadingFallback } from "@/components/loading-fallback";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -17,27 +19,22 @@ export const metadata: Metadata = {
   description: "A financial dashboard for managing your finances",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           <AppProvider>
             <div className="flex h-screen p-0">
-              <Sidebar />
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <Header />
-                <main className="flex-1 overflow-auto p-8 bg-mainBackground">
-                  {children}
+              <Suspense fallback={<div className="h-screen w-64 animate-pulse bg-background" />}>
+                <Sidebar />
+              </Suspense>
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <Suspense fallback={<div className="h-20 w-full animate-pulse bg-background" />}>
+                  <Header />
+                </Suspense>
+                <main className="flex-1 overflow-auto bg-mainBackground p-8">
+                  <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
                 </main>
               </div>
             </div>

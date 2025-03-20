@@ -9,11 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useApp } from "@/context/app-context";
 import type { User } from "@/types";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
@@ -24,7 +20,7 @@ const ActiveTabClassName =
   "text-muted-foreground  data-[state=active]:border-b-2 data-[state=active]:text-primary data-[state=active]:!border-primary data-[state=active]:!border-t-0 data-[state=active]:!border-r-0 data-[state=active]:!border-l-0  data-[state=active]:!rounded-none data-[state=active]:!bg-transparent";
 
 export default function SettingsPage() {
-  const { user, updateUserProfile, isLoading, setUser } = useApp();
+  const { user, updateUserProfile, isLoading } = useApp();
   const [formData, setFormData] = useState<Partial<User>>(user || {});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,18 +48,16 @@ export default function SettingsPage() {
       <div className="flex h-full items-center justify-center">
         <div className="text-center">
           <h2 className="text-xl font-semibold">Loading user data...</h2>
-          <p className="text-muted-foreground">
-            Please wait while we load your profile.
-          </p>
+          <p className="text-muted-foreground">Please wait while we load your profile.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-full bg-background p-8 rounded-2xl">
+    <div className="mx-auto max-w-full rounded-2xl bg-background p-8">
       <Tabs defaultValue="edit-profile">
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-8 !bg-transparent justify-start">
+        <TabsList className="grid w-full grid-cols-3 justify-start !bg-transparent md:grid-cols-8">
           <TabsTrigger value="edit-profile" className={ActiveTabClassName}>
             Edit Profile
           </TabsTrigger>
@@ -75,12 +69,12 @@ export default function SettingsPage() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="edit-profile" className="mt-0 pt-0 gap-0">
+        <TabsContent value="edit-profile" className="mt-0 gap-0 pt-0">
           <form
             onSubmit={handleSubmit}
-            className=" rounded-b-xl bg-transparent p-6 md:flex justify-center  gap-6"
+            className=" justify-center gap-6 rounded-b-xl bg-transparent p-6  md:flex"
           >
-            <div className="mb-8 flex md:inline-block justify-center">
+            <div className="mb-8 flex justify-center md:inline-block">
               <EditableAvatar
                 src={formData.avatar as unknown as string}
                 alt={user.name}
@@ -92,10 +86,10 @@ export default function SettingsPage() {
                 }}
               />
             </div>
-            <div className="w-full justify-between flex flex-col gap-x-4">
+            <div className="flex w-full flex-col justify-between gap-x-4">
               <div className="flex justify-center"></div>
 
-              <div className="grid gap-6 md:grid-cols-2 mb-6">
+              <div className="mb-6 grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium">
                     Your Name
@@ -150,7 +144,7 @@ export default function SettingsPage() {
                   />
                 </div>
 
-                <div className="space-y-2 flex flex-col ">
+                <div className="flex flex-col space-y-2 ">
                   <label htmlFor="dateOfBirth" className="text-sm font-medium">
                     Date of Birth
                   </label>
@@ -159,7 +153,7 @@ export default function SettingsPage() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-between text-left font-normal items-center ",
+                          "w-full items-center justify-between text-left font-normal ",
                           !formData.dateOfBirth && "text-muted-foreground"
                         )}
                       >
@@ -177,11 +171,7 @@ export default function SettingsPage() {
                     <PopoverContent className="w-full p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={
-                          formData.dateOfBirth
-                            ? new Date(formData.dateOfBirth)
-                            : undefined
-                        }
+                        selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined}
                         onSelect={(e) =>
                           setFormData({
                             ...formData,
@@ -195,10 +185,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label
-                    htmlFor="presentAddress"
-                    className="text-sm font-medium"
-                  >
+                  <label htmlFor="presentAddress" className="text-sm font-medium">
                     Present Address
                   </label>
                   <Input
@@ -211,10 +198,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label
-                    htmlFor="permanentAddress"
-                    className="text-sm font-medium"
-                  >
+                  <label htmlFor="permanentAddress" className="text-sm font-medium">
                     Permanent Address
                   </label>
                   <Input
@@ -267,11 +251,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-36 rounded-xl py-6"
-                >
+                <Button type="submit" disabled={isLoading} className="w-36 rounded-xl py-6">
                   {isLoading ? "Saving..." : "Save"}
                 </Button>
               </div>
@@ -282,9 +262,7 @@ export default function SettingsPage() {
         <TabsContent value="preferences" className="mt-0">
           <div className="rounded-b-xl  bg-background p-6 shadow-sm">
             <div className="flex h-40 items-center justify-center">
-              <p className="text-muted-foreground">
-                Preference settings will be available soon.
-              </p>
+              <p className="text-muted-foreground">Preference settings will be available soon.</p>
             </div>
           </div>
         </TabsContent>
@@ -292,9 +270,7 @@ export default function SettingsPage() {
         <TabsContent value="security" className="mt-0">
           <div className="rounded-b-xl bg-background p-6 shadow-sm">
             <div className="flex h-40 items-center justify-center">
-              <p className="text-muted-foreground">
-                Security settings will be available soon.
-              </p>
+              <p className="text-muted-foreground">Security settings will be available soon.</p>
             </div>
           </div>
         </TabsContent>
