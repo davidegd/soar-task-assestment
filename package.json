@@ -12,7 +12,9 @@
     "prepare": "husky install",
     "test": "jest",
     "test:watch": "jest --watch",
-    "pre-commit": "lint-staged && npm run type-check"
+    "pre-commit": "lint-staged && npm run type-check",
+    "analyze": "ANALYZE=true next build",
+    "build:prod": "next build && next-sitemap"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -71,6 +73,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.0.1",
+    "critters": "^0.0.25",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.1.0",

@@ -1,0 +1,46 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build project
+        run: npm run build
+        
+      - name: Start server
+        run: npm run start & npx wait-on http://localhost:3000
+        
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            http://localhost:3000/
+            http://localhost:3000/dashboard
+            http://localhost:3000/cards
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          budgetPath: ./lighthouse-budget.json
+          
+      - name: Format lighthouse score
+        if: always()
+        run: |
+          echo "⚡ Lighthouse Scores ⚡"
+          echo "Performance: $(cat .lighthouseci/lhr-*.json | jq '.categories.performance.score * 100' | awk '{print int($1)}')%"
+          echo "Best Practices: $(cat .lighthouseci/lhr-*.json | jq '.categories.["best-practices"].score * 100' | awk '{print int($1)}')%"
+
