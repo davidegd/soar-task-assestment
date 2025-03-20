@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-} from "react";
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import type { Card, Transaction, User, Contact, ChartData } from "@/types";
 import {
   fetchCards,
@@ -31,9 +24,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     labels: [],
     datasets: [],
   });
-  const [expenseStatisticsData, setExpenseStatisticsData] = useState<ChartData>(
-    { labels: [], datasets: [] }
-  );
+  const [expenseStatisticsData, setExpenseStatisticsData] = useState<ChartData>({
+    labels: [],
+    datasets: [],
+  });
   const [balanceHistoryData, setBalanceHistoryData] = useState<ChartData>({
     labels: [],
     datasets: [],
@@ -56,14 +50,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       try {
         setIsLoading(true);
 
-        const [userData, cardsData, transactionsData, contactsData, chartData] =
-          await Promise.all([
-            fetchUser(),
-            fetchCards(),
-            fetchTransactions(),
-            fetchContacts(),
-            fetchChartData(),
-          ]);
+        const [userData, cardsData, transactionsData, contactsData, chartData] = await Promise.all([
+          fetchUser(),
+          fetchCards(),
+          fetchTransactions(),
+          fetchContacts(),
+          fetchChartData(),
+        ]);
 
         setUser(userData);
         setCards(cardsData);
@@ -90,9 +83,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadData();
 
-    const intervalId = setInterval(() => {
-      loadData(true);
-    }, 5 * 60 * 1000);
+    const intervalId = setInterval(
+      () => {
+        loadData(true);
+      },
+      5 * 60 * 1000
+    );
 
     return () => clearInterval(intervalId);
   }, [loadData]);
@@ -147,7 +143,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             icon: "user",
           };
 
-          setTransactions((prev: TransactionType) => [newTransaction, ...prev]);
+          setTransactions((prev: Transaction[]) => [newTransaction, ...prev]);
         }
 
         toast.success(`$${amount.toFixed(2)} has been sent successfully.`);

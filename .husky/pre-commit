@@ -4,3 +4,4 @@
 echo "🔍 Validating code before commit..."
 npm run pre-commit
 
+npm run pre-commit

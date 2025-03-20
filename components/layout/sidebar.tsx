@@ -3,19 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  CreditCard,
-  Users,
-  BarChart3,
-  FileText,
-  Settings,
-  Menu,
-  CheckSquare,
-  Landmark,
-  Wallet,
-  X,
-} from "lucide-react";
+import { Menu, CheckSquare, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { getNavigationItems } from "./navigation-items";
@@ -32,15 +20,12 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        " h-full flex-col bg-background shadow-sm hidden md:flex border-r border-border",
+        " hidden h-full flex-col border-r border-border bg-background shadow-sm md:flex",
         className
       )}
     >
       <div className="flex h-16 items-center  px-6">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 font-semibold"
-        >
+        <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
           <CheckSquare className="h-6 w-6" />
           <span>Soar Task</span>
         </Link>
@@ -50,17 +35,15 @@ export function Sidebar({ className }: SidebarProps) {
           {navItems.map((item) => (
             <div className="flex" key={item.href}>
               {item.active ? (
-                <div className="w-2.5 h-10 bg-primary rounded-lg -ml-1 "> </div>
+                <div className="-ml-1 h-10 w-2.5 rounded-lg bg-primary "> </div>
               ) : (
-                <div className="w-1 h-10" />
+                <div className="h-10 w-1" />
               )}
               <Link
                 href={item.href}
                 className={cn(
                   "flex items-center gap-4 px-6 py-3 transition-all",
-                  item.active
-                    ? "  text-primary"
-                    : "text-muted-foreground  hover:text-foreground"
+                  item.active ? "  text-primary" : "text-muted-foreground  hover:text-foreground"
                 )}
               >
                 {item.icon}
@@ -82,12 +65,7 @@ export function MobileNav() {
 
   return (
     <div className="md:hidden">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="mr-2"
-        onClick={() => setOpen(!open)}
-      >
+      <Button variant="ghost" size="icon" className="mr-2" onClick={() => setOpen(!open)}>
         <Menu className="h-5 w-5" />
         <span className="sr-only">Toggle Menu</span>
       </Button>
@@ -95,18 +73,11 @@ export function MobileNav() {
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
           <div className="fixed left-0 top-0 h-full w-3/4 bg-background p-6 shadow-lg">
             <div className="flex items-center justify-between">
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 font-semibold"
-              >
+              <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
                 <CheckSquare className="h-6 w-6" />
                 <span>Soar Task</span>
               </Link>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setOpen(false)}
-              >
+              <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-5 w-5" />
                 <span className="sr-only">Close</span>
               </Button>
@@ -115,18 +86,16 @@ export function MobileNav() {
               {navItems.map((item) => (
                 <div className="flex" key={item.href}>
                   {item.active ? (
-                    <div className="w-2.5 h-10 bg-primary rounded-lg "> </div>
+                    <div className="h-10 w-2.5 rounded-lg bg-primary "> </div>
                   ) : (
-                    <div className="w-1 h-10" />
+                    <div className="h-10 w-1" />
                   )}
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium",
-                      item.active
-                        ? "text-primary"
-                        : "hover:bg-muted text-muted-foreground"
+                      item.active ? "text-primary" : "text-muted-foreground hover:bg-muted"
                     )}
                     onClick={() => setOpen(false)}
                   >
