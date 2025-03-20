@@ -2,7 +2,7 @@ const userConfig = undefined;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: process.env.CI !== "true",
+  swcMinify: true,
   compiler: {
     ...(process.env.CI !== "true" && {
       removeConsole:
