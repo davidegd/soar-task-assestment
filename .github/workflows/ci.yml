@@ -22,15 +22,26 @@ jobs:
       - name: Install dependencies
         run: npm ci --force
 
+      - name: Install Babel dependencies
+        run: npm install --no-save @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript babel-jest
+
       - name: Lint
         run: npm run lint
+        env:
+          CI: 'true'
 
       - name: Type check
         run: npm run type-check
+        env:
+          CI: 'true'
 
       - name: Run tests
         run: npm test
+        env:
+          CI: 'true'
 
       - name: Build
         run: npm run build
+        env:
+          CI: 'true'
 
