@@ -4,7 +4,6 @@ import { useTheme } from "next-themes";
 import CardDarkLogo from "@/assets/images/card.png";
 import CardLightLogo from "@/assets/images/card-white.png";
 import Image from "next/image";
-
 interface CardItemProps {
   card: CardType;
   className?: string;
@@ -24,34 +23,32 @@ export function CardItem({ card, className }: CardItemProps) {
   );
 
   return (
-    <div className="transform transition-transform duration-200 hover:scale-100 h-full">
-      <div className={cardClass}>
-        <div className="mb-6">
-          <div className="text-sm opacity-80">Balance</div>
-          <div className="text-2xl font-bold">{formatAmount(card.balance)}</div>
-        </div>
+    <div className={cardClass}>
+      <div className="mb-6">
+        <div className="text-sm opacity-80">Balance</div>
+        <div className="text-2xl font-bold">{formatAmount(card.balance)}</div>
+      </div>
 
-        <div className="mb-6 flex justify-between text-sm">
-          <div>
-            <div className="opacity-80">CARD HOLDER</div>
-            <div>{card.cardHolder}</div>
-          </div>
-          <div>
-            <div className="opacity-80">VALID THRU</div>
-            <div>{card.validThru}</div>
-          </div>
+      <div className="mb-6 flex justify-between text-sm">
+        <div>
+          <div className="opacity-80">CARD HOLDER</div>
+          <div>{card.cardHolder}</div>
         </div>
+        <div>
+          <div className="opacity-80">VALID THRU</div>
+          <div>{card.validThru}</div>
+        </div>
+      </div>
 
-        <div className="flex items-center justify-between">
-          <div className="text-lg font-medium">
-            {maskCardNumber(card.cardNumber)}
-          </div>
-          <Image
-            src={card.isDark ? CardDarkLogo : CardLightLogo}
-            alt="card-logo"
-            className="h-auto w-12"
-          />
+      <div className="flex items-center justify-between">
+        <div className="text-lg font-medium">
+          {maskCardNumber(card.cardNumber)}
         </div>
+        <Image
+          src={card.isDark ? CardDarkLogo : CardLightLogo}
+          alt="card-logo"
+          className="h-auto w-12"
+        />
       </div>
     </div>
   );

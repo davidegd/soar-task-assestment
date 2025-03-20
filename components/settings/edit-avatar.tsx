@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import UserAvatarPlaceholder from "@/assets/images/user.png";
 
 interface EditableAvatarProps {
   src: string;
@@ -79,7 +79,7 @@ export function EditableAvatar({
         style={{ width: size, height: size }}
       >
         <Image
-          src={src}
+          src={src ?? UserAvatarPlaceholder}
           alt={alt}
           width={size}
           height={size}

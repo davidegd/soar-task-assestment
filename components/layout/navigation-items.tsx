@@ -61,10 +61,10 @@ export function getNavigationItems(pathname: string) {
       active: pathname === "/privileges",
     },
     {
-      title: "Setting",
-      href: "/setting",
+      title: "Settings",
+      href: "/settings",
       icon: <Settings className="h-5 w-5" />,
-      active: pathname === "/setting",
+      active: pathname === "/settings",
     },
   ];
 }

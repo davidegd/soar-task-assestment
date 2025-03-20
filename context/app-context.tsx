@@ -11,21 +11,8 @@ import {
   fetchChartData,
 } from "@/services/api";
 import { toast } from "sonner";
-
-type AppContextType = {
-  user: User | null;
-  cards: Card[];
-  transactions: Transaction[];
-  contacts: Contact[];
-  weeklyActivityData: ChartData;
-  expenseStatisticsData: ChartData;
-  balanceHistoryData: ChartData;
-  isLoading: boolean;
-  error: string | null;
-  updateUserProfile: (userData: Partial<User>) => Promise<void>;
-  transferMoney: (contactId: string, amount: number) => Promise<void>;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-};
+import { AppContextType } from "@/types/context";
+import { act } from "@testing-library/react";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -76,6 +63,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         toast.error("Failed to load data. Please try again later.");
       } finally {
         setIsLoading(false);
+        act(() => setIsLoading(false));
       }
     };
 
@@ -92,6 +80,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       toast.error("Failed to update profile. Please try again.");
     } finally {
       setIsLoading(false);
+      act(() => setIsLoading(false));
     }
   };
 
@@ -103,6 +92,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       toast.error("Failed to transfer money. Please try again.");
     } finally {
       setIsLoading(false);
+      act(() => setIsLoading(false));
     }
   };
 

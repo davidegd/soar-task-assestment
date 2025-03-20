@@ -4,14 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import {
-  Bell,
-  MoonIcon,
-  SearchIcon,
-  Settings,
-  SunIcon,
-  UserIcon,
-} from "lucide-react";
+import { Bell, MoonIcon, SearchIcon, Settings, SunIcon } from "lucide-react";
 import { MobileNav } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useApp } from "@/context/app-context";
 import { useTheme } from "next-themes";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import UserAvatarPlaceholder from "@/assets/images/user.png";
 
 interface HeaderProps {
   title?: string;
@@ -94,7 +87,10 @@ export function Header({ title }: HeaderProps) {
               <Button variant="secondary" size="icon" className="rounded-full">
                 <div className="h-11 w-10 items-center justify-center flex rounded-full ">
                   <Image
-                    src={user?.avatar as unknown as string}
+                    src={
+                      (user?.avatar as unknown as string) ??
+                      UserAvatarPlaceholder
+                    }
                     alt="User avatar"
                     className="rounded-full w-11 h-9"
                     width={1}
