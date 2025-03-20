@@ -2,15 +2,16 @@ const userConfig = undefined;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: process.env.CI !== "true",
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === "production"
-        ? {
-            exclude: ["error", "warn"],
-          }
-        : false,
+    ...(process.env.CI !== "true" && {
+      removeConsole:
+        process.env.NODE_ENV === "production"
+          ? {
+              exclude: ["error", "warn"],
+            }
+          : false,
+    }),
   },
   eslint: {
     ignoreDuringBuilds: true,
