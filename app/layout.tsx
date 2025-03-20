@@ -6,6 +6,8 @@ import { AppProvider } from "@/context/app-context";
 import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "@/components/layout/sidebar";
+import { Suspense } from "react";
+import { LoadingFallback } from "@/components/loading-fallback";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,19 +27,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           <AppProvider>
             <div className="flex h-screen p-0">
-              <Sidebar />
+              <Suspense
+                fallback={
+                  <div className="w-64 h-screen bg-background animate-pulse" />
+                }
+              >
+                <Sidebar />
+              </Suspense>
               <div className="flex flex-col flex-1 overflow-hidden">
-                <Header />
+                <Suspense
+                  fallback={
+                    <div className="h-20 w-full bg-background animate-pulse" />
+                  }
+                >
+                  <Header />
+                </Suspense>
                 <main className="flex-1 overflow-auto p-8 bg-mainBackground">
-                  {children}
+                  <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
                 </main>
               </div>
             </div>

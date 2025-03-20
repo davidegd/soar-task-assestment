@@ -56,10 +56,10 @@ describe("useApp hook", () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     act(() => {
-      result.current.updateUserProfile({ name: "Updated Name" });
+      result.current.updateUserProfile({ name: "Charlene Ree" });
     });
 
-    expect(result.current.user?.name).toBe("Updated Name");
+    expect(result.current.user?.name).toBe("Charlene Ree");
   });
 
   it("handles transfer money function", async () => {
