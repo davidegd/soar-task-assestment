@@ -1,8 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Soar Task Assessment 🚀
 
-## Getting Started
+Welcome to the **Soar Task Assessment** project! This is a modern web application built with [Next.js](https://nextjs.org), designed to showcase best practices in web development, including performance optimization, clean code, and developer productivity. Whether you're here to learn, contribute, or deploy, this guide will help you get started.
 
-First, run the development server:
+---
+
+## 🌟 Features
+
+- **Blazing Fast Development**: Powered by Next.js with Turbopack for lightning-fast builds.
+- **Type Safety**: Fully typed with TypeScript for a robust development experience.
+- **Modern Styling**: Integrated with Tailwind CSS for rapid UI development.
+- **Code Quality**: Enforced with ESLint, Prettier, and Husky Git hooks.
+- **Automated Testing**: Comprehensive tests using Jest to ensure reliability.
+- **Commit Standards**: Follows [Conventional Commits](https://www.conventionalcommits.org/) for consistent commit messages.
+- **Optimized Fonts**: Uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to load the sleek [Geist](https://vercel.com/font) font family.
+
+---
+
+## 🚀 Submitted
+
+The application is deployed in this url: https://soar-task-assestment.vercel.app/
+
+## 🔧 Setup & Installation
+
+### Development
+
+To start the development server, run:
 
 ```bash
 npm run dev
@@ -14,35 +36,31 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open http://localhost:3000 in your browser to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Editing Pages
+You can begin editing the application by modifying the main entry point at app/page.tsx. The app supports hot reloading, so your changes will appear instantly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 Running Tests
 
-## Learn More
+Run the test suite with:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run test
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For continuous testing during development:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run test:watch
+```
 
-## Deploy on Vercel
+## 🚀 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To build and deploy the project:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sh
+npm run build  # or pnpm run build
+```
 
-### Husky and Git Hooks
-
-Husky is used to run scripts before certain Git actions:
-
-- **pre-commit**: Runs lint-staged and type checking before each commit.
-- **pre-push**: Runs tests and build before each push.
-- **commit-msg**: Validates the format of the commit message.
-
-### Commit Conventions
-
-We use [Conventional Commits](https://www.conventionalcommits.org/) to standardize commit messages. Each message must follow the format:
+---
