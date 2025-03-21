@@ -95,7 +95,6 @@ export function Header({ title }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <div
                 className="ring:none flex items-center justify-center rounded-full hover:cursor-pointer hover:opacity-90 focus-visible:border-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                tabIndex={0}
                 aria-label="User menu"
               >
                 <Image

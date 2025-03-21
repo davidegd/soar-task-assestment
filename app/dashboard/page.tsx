@@ -100,11 +100,7 @@ export default function DashboardPage() {
             aria-labelledby="recent-transactions-heading"
           >
             {transactions.map((transaction) => (
-              <MemoizedTransactionItem
-                key={transaction.id}
-                transaction={transaction}
-                role="listitem"
-              />
+              <MemoizedTransactionItem key={transaction.id} transaction={transaction} />
             ))}
           </div>
         </div>

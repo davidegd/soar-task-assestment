@@ -67,7 +67,6 @@ export function Sidebar({ className }: SidebarProps) {
         size="lg"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         className="w-full items-center"
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
         <p className="flex text-sm">
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}{" "}
