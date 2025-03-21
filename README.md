@@ -22,6 +22,19 @@ The application is deployed in this url: https://soar-task-assestment.vercel.app
 
 ## 🔧 Setup & Installation
 
+### 1️⃣ Clone the Repository
+
+```sh
+git clone https://github.com/davidegd/soar-task-assestment.git
+cd soar-task-assestment
+```
+
+### 2️⃣ Install Dependencies
+
+```sh
+npm install  # or pnpm install
+```
+
 ### Development
 
 To start the development server, run:
