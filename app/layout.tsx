@@ -15,8 +15,17 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Soar Task - Financial Dashboard",
-  description: "A financial dashboard for managing your finances",
+  title: "SOAR Dashboard | Manage Your Finances",
+  description:
+    "A comprehensive financial dashboard for managing your finances, cards, and transactions",
+  keywords: ["fintech", "dashboard", "finances", "banking", "transactions"],
+  authors: [{ name: "Soar Task Team" }],
+  openGraph: {
+    title: "Fintech Dashboard | Soar Task",
+    description: "Manage your finances with our comprehensive dashboard",
+    type: "website",
+    siteName: "Soar Task Fintech",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,14 +40,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <AppProvider>
             <div className="flex h-screen p-0">
-              <Suspense fallback={<div className="h-screen w-64 animate-pulse bg-background" />}>
+              {/* <Suspense fallback={<div className="h-screen w-64 animate-pulse bg-background" />}>
                 <Sidebar />
-              </Suspense>
+              </Suspense> */}
               <div className="flex flex-1 flex-col overflow-hidden">
-                <Suspense fallback={<div className="h-20 w-full animate-pulse bg-background" />}>
+                {/* <Suspense fallback={<div className="h-20 w-full animate-pulse bg-background" />}>
                   <Header />
-                </Suspense>
-                <main className="flex-1 overflow-auto bg-mainBackground p-8">
+                </Suspense> */}
+                <main className="page-transition smooth-scroll flex-1 overflow-auto bg-mainBackground p-8">
                   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
                 </main>
               </div>

@@ -8,6 +8,7 @@ import {
   CheckSquare,
   Landmark,
   Wallet,
+  ShoppingCart,
 } from "lucide-react";
 
 export function getNavigationItems(pathname: string) {
@@ -65,6 +66,12 @@ export function getNavigationItems(pathname: string) {
       href: "/settings",
       icon: <Settings className="h-5 w-5" />,
       active: pathname === "/settings",
+    },
+    {
+      title: "Create Order",
+      href: "/create-order",
+      icon: <ShoppingCart className="h-5 w-5" />,
+      active: pathname === "/create-order",
     },
   ];
 }

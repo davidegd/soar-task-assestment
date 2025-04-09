@@ -84,6 +84,31 @@
   }
 }
 
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    transition: all 0.2s ease;
+  }
+}
+
 .card-dark {
   background-color: hsl(var(--card-dark));
   color: white;
@@ -93,6 +118,26 @@
   background-color: hsl(var(--card-light));
   color: hsl(var(--card-foreground));
   border: 1px solid hsl(var(--border));
+}
+
+.page-transition {
+  animation: pageTransition 0.4s ease-out;
+}
+
+@keyframes pageTransition {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 @layer utilities {

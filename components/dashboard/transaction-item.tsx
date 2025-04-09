@@ -2,15 +2,15 @@ import { CreditCard, User, DollarSign, BanknoteIcon } from "lucide-react";
 import type { Transaction } from "@/types";
 
 type TransactionIcon = "credit-card" | "paypal" | "user" | "default";
-import { cn } from "@/lib/utils";
-import { ReactElement } from "react";
+import { cn, formatAmount } from "@/lib/utils";
+import { ReactElement, memo } from "react";
 
 interface TransactionItemProps {
   transaction: Transaction;
   className?: string;
 }
 
-export function TransactionItem({ transaction, className }: TransactionItemProps) {
+const TransactionItem = memo(({ transaction, className }: TransactionItemProps) => {
   const isPositive = transaction.amount > 0;
 
   const IconByTransaction: Record<TransactionIcon, ReactElement> = {
@@ -42,12 +42,12 @@ export function TransactionItem({ transaction, className }: TransactionItemProps
       </div>
       <div className={cn("font-medium", isPositive ? "text-green-600" : "text-red-600")}>
         {isPositive ? "+" : ""}
-        {transaction.amount.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-        })}
+        {formatAmount(transaction.amount)}
       </div>
     </div>
   );
-}
+});
+
+TransactionItem.displayName = "TransactionItem";
+
+export { TransactionItem };

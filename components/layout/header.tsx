@@ -65,7 +65,7 @@ export function Header({ title }: HeaderProps) {
         <div className="flex items-center justify-between space-x-6">
           <Button
             variant="ghost"
-            className="relative hidden h-11 w-11 items-center rounded-full bg-muted md:flex"
+            className="relative hidden h-11 w-11 items-center rounded-full bg-muted hover:opacity-80 md:flex"
             size="sm"
             aria-label="Settings"
           >
@@ -75,7 +75,7 @@ export function Header({ title }: HeaderProps) {
           </Button>
           <Button
             variant="ghost"
-            className="relative hidden h-11 w-11 items-center rounded-full bg-muted md:flex"
+            className="relative hidden h-11 w-11 items-center rounded-full bg-muted hover:opacity-80 md:flex"
             size="sm"
             aria-label="Notifications"
           >

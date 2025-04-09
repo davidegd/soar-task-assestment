@@ -1,6 +1,9 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import type React from "react";
+
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import { toast } from "sonner";
 import type { Card, Transaction, User, Contact, ChartData } from "@/types";
 import {
   fetchCards,
@@ -9,9 +12,33 @@ import {
   fetchContacts,
   fetchChartData,
 } from "@/services/api";
-import { toast } from "sonner";
-import type { AppContextType } from "@/types/context";
-import { act } from "@testing-library/react";
+import { type Product, type ProductGroup } from "@/services/product-service";
+import { fetchClientProductGroup } from "@/services/alegra-service";
+
+type AppContextType = {
+  user: User | null;
+  cards: Card[];
+  transactions: Transaction[];
+  contacts: Contact[];
+  weeklyActivityData: ChartData;
+  expenseStatisticsData: ChartData;
+  balanceHistoryData: ChartData;
+  productGroups: ProductGroup[];
+  currentProductGroup: ProductGroup | null;
+  categorizedProducts: Record<string, Product[]>;
+  alegraProducts: Product[];
+  isLoading: boolean;
+  error: string | null;
+  updateUserProfile: (userData: Partial<User>) => Promise<void>;
+  transferMoney: (contactId: string, amount: number) => Promise<void>;
+  refreshData: () => Promise<void>;
+  loadProductGroup: (
+    id: string,
+    params?: { clientId?: string | null; dateAfter?: string | null }
+  ) => Promise<void>;
+  setAlegraProducts: (products: Product[]) => void;
+  setCategorizedProducts: (categorized: Record<string, Product[]>) => void;
+};
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -32,60 +59,50 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     labels: [],
     datasets: [],
   });
+  const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
+  const [currentProductGroup, setCurrentProductGroup] = useState<ProductGroup | null>(null);
+  const [categorizedProducts, setCategorizedProducts] = useState<Record<string, Product[]>>({});
+  const [alegraProducts, setAlegraProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  const loadData = useCallback(
-    async (forceRefresh = false) => {
-      if (
-        !forceRefresh &&
-        lastUpdated &&
-        new Date().getTime() - lastUpdated.getTime() < 5 * 60 * 1000 &&
-        user
-      ) {
-        return;
-      }
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
 
-      try {
-        setIsLoading(true);
+      // Fetch all data in parallel
+      const [userData, cardsData, transactionsData, contactsData, chartData] = await Promise.all([
+        fetchUser(),
+        fetchCards(),
+        fetchTransactions(),
+        fetchContacts(),
+        fetchChartData(),
+      ]);
 
-        const [userData, cardsData, transactionsData, contactsData, chartData] = await Promise.all([
-          fetchUser(),
-          fetchCards(),
-          fetchTransactions(),
-          fetchContacts(),
-          fetchChartData(),
-        ]);
+      setUser(userData);
+      setCards(cardsData);
+      setTransactions(transactionsData);
+      setContacts(contactsData);
+      setWeeklyActivityData(chartData.weeklyActivity);
+      setExpenseStatisticsData(chartData.expenseStatistics);
+      setBalanceHistoryData(chartData.balanceHistory);
 
-        setUser(userData);
-        setCards(cardsData);
-        setTransactions(transactionsData);
-        setContacts(contactsData);
-        setWeeklyActivityData(chartData.weeklyActivity);
-        setExpenseStatisticsData(chartData.expenseStatistics);
-        setBalanceHistoryData(chartData.balanceHistory);
-        setLastUpdated(new Date());
-        setError(null);
-      } catch (err) {
-        setError("Failed to load data. Please try again later.");
-        toast.error("Failed to load data. Please try again later.");
-      } finally {
-        setIsLoading(false);
-        if (typeof window !== "undefined") {
-          act(() => setIsLoading(false));
-        }
-      }
-    },
-    [lastUpdated, user]
-  );
+      setError(null);
+    } catch (err) {
+      setError("Failed to load data. Please try again later.");
+      toast.error("Failed to load data. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     loadData();
 
+    // Set up polling for real-time updates (every 5 minutes)
     const intervalId = setInterval(
       () => {
-        loadData(true);
+        loadData();
       },
       5 * 60 * 1000
     );
@@ -96,68 +113,49 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const updateUserProfile = useCallback(async (userData: Partial<User>) => {
     try {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // In a real app, this would be an API call
+      // await updateUserAPI(userData)
 
-      setUser((prev: User | null) => (prev ? { ...prev, ...userData } : null));
-      toast.success("Your profile has been updated successfully.");
+      // For now, just update the local state
+      setUser((prev) => (prev ? { ...prev, ...userData } : null));
+
+      toast.success("Profile Updated", {
+        description: "Your profile has been updated successfully.",
+      });
     } catch (err) {
-      toast.error("Failed to update profile. Please try again.");
+      toast.error("Error", {
+        description: "Failed to update profile. Please try again.",
+      });
     } finally {
       setIsLoading(false);
-      if (typeof window !== "undefined") {
-        act(() => setIsLoading(false));
-      }
     }
   }, []);
 
-  const transferMoney = useCallback(
-    async (contactId: string, amount: number) => {
-      try {
-        setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 500));
+  const transferMoney = useCallback(async (contactId: string, amount: number) => {
+    try {
+      setIsLoading(true);
+      // In a real app, this would be an API call
+      // await transferMoneyAPI(contactId, amount)
 
-        setCards((prevCards: Card[]) => {
-          if (prevCards.length === 0) return prevCards;
+      // For now, just show a success message
+      toast.success("Transfer Successful", {
+        description: `$${amount.toFixed(2)} has been sent successfully.`,
+      });
+    } catch (err) {
+      toast.error("Error", {
+        description: "Failed to transfer money. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-          const updatedCards = [...prevCards];
-          updatedCards[0] = {
-            ...updatedCards[0],
-            balance: updatedCards[0].balance - amount,
-          };
-
-          return updatedCards;
-        });
-
-        const contact = contacts.find((c: Contact) => c.id === contactId);
-        if (contact) {
-          const newTransaction: Transaction = {
-            id: `tx-${Date.now()}`,
-            title: `Transfer to ${contact.name}`,
-            date: new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }),
-            amount: -amount,
-            type: "withdrawal",
-            icon: "user",
-          };
-
-          setTransactions((prev: Transaction[]) => [newTransaction, ...prev]);
-        }
-
-        toast.success(`$${amount.toFixed(2)} has been sent successfully.`);
-      } catch (err) {
-        toast.error("Failed to transfer money. Please try again.");
-      } finally {
-        setIsLoading(false);
-        if (typeof window !== "undefined") {
-          act(() => setIsLoading(false));
-        }
-      }
-    },
-    [contacts]
-  );
+  const refreshData = useCallback(async () => {
+    await loadData();
+    toast.success("Data Refreshed", {
+      description: "Your dashboard has been updated with the latest data.",
+    });
+  }, [loadData]);
 
   const value = useMemo(
     () => ({
@@ -168,12 +166,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       weeklyActivityData,
       expenseStatisticsData,
       balanceHistoryData,
+      productGroups,
+      currentProductGroup,
+      categorizedProducts,
+      alegraProducts,
       isLoading,
       error,
       updateUserProfile,
       transferMoney,
-      setUser,
-      refreshData: () => loadData(true),
+      refreshData,
+      setAlegraProducts,
+      setCategorizedProducts,
     }),
     [
       user,
@@ -183,11 +186,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       weeklyActivityData,
       expenseStatisticsData,
       balanceHistoryData,
+      productGroups,
+      currentProductGroup,
+      categorizedProducts,
+      alegraProducts,
       isLoading,
       error,
       updateUserProfile,
       transferMoney,
-      loadData,
+      refreshData,
     ]
   );
 
