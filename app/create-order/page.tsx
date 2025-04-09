@@ -1,5 +1,10 @@
 "use client";
 
+<<<<<<< HEAD
+=======
+import type React from "react";
+
+>>>>>>> 23b0433 (Implement create order page)
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -22,13 +27,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useAlegraProducts } from "@/hooks/use-alegra-products";
 import type { Product } from "@/services/product-service";
-import { decompress } from "lz-string";
 
 interface OrderItem {
   product: Product;
   quantity: number;
 }
 
+// Función para obtener el icono de categoría
 const decodeShortUrl = (encoded: string) => {
   try {
     const decoded = atob(encoded.replace(/-/g, "+").replace(/_/g, "/"));
@@ -57,18 +62,13 @@ const getCategoryIcon = (category: string) => {
   }
 };
 
+// Necesitamos pasar la función updateOrderItem al componente ProductCard
 export default function CreateOrderPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [decodedParams, setDecodedParams] = useState<{ client_id: any; date_after: any } | null>(
     null
   );
-
-  // Valores por defecto para clientId y dateAfter (ocultos para el usuario)
-  // const clientId = searchParams.get("client_id") || "44";
-  // const dateAfter = searchParams.get("date_after") || "2024-03-20";
-  // const params = searchParams.get("p")
-
   // Usar directamente el hook de useAlegraProducts
   const { isLoading: isLoadingAlegra, fetchProducts, categorizedProducts } = useAlegraProducts();
 
@@ -79,7 +79,6 @@ export default function CreateOrderPage() {
 
   useEffect(() => {
     const encoded = searchParams.get("p");
-    console.log(encoded);
     if (encoded) {
       try {
         const decoded = decodeShortUrl(encoded);
@@ -93,7 +92,6 @@ export default function CreateOrderPage() {
       }
     }
   }, [searchParams]);
-  console.log(decodedParams);
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -108,7 +106,7 @@ export default function CreateOrderPage() {
     };
 
     loadData();
-  }, [decodedParams, fetchProducts]);
+  }, [fetchProducts]);
 
   // Función para añadir o actualizar un producto en la orden
   const updateOrderItem = (product: Product, quantity: number) => {
@@ -149,7 +147,7 @@ export default function CreateOrderPage() {
     const newQuantity = currentQuantity + product.step;
 
     // No verificar límite de stock, permitir cualquier cantidad
-    updateOrderItem(product, Number(newQuantity.toFixed(2)));
+    updateOrderItem(product, newQuantity);
   };
 
   // Función para decrementar la cantidad de un producto
@@ -160,7 +158,12 @@ export default function CreateOrderPage() {
     // Usar siempre un paso de 1, independientemente de la unidad
     const newQuantity = currentQuantity - product.step;
 
-    updateOrderItem(product, newQuantity > 0 ? Number(newQuantity.toFixed(2)) : 0);
+    // Verificar que no sea menor que 0
+    if (newQuantity > 0) {
+      updateOrderItem(product, newQuantity);
+    } else {
+      updateOrderItem(product, 0); // Eliminar el producto si la cantidad es 0 o menor
+    }
   };
 
   // Calcular el total de la orden
@@ -223,7 +226,7 @@ export default function CreateOrderPage() {
   // Mostrar un estado de carga mientras se obtienen los datos
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 px-4">
         <div className="flex items-center justify-between">
           <Skeleton className="h-12 w-full bg-neutral-200" />
         </div>
@@ -233,17 +236,19 @@ export default function CreateOrderPage() {
             <Skeleton key={i} className="h-48 rounded-xl bg-neutral-200" />
           ))}
         </div>
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-12 w-full bg-neutral-200" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col md:h-[calc(100vh-4rem)]">
-      {/* Encabezado */}
-      <div className="mb-6 flex items-center justify-between">
+    <div className=" flex h-[calc(100vh-1rem)] flex-col md:h-[calc(100vh-1rem)]">
+      <div className=" mb-6 flex items-center justify-between p-4">
         <div>
-          <h1 className="text-2xl font-bold">Create Order</h1>
-          <p className="text-muted-foreground">Select products and quantities for your order</p>
+          <h1 className="text-2xl font-bold">Crear Orden</h1>
+          <p className="text-muted-foreground">Selecciona productos y cantidades para tu orden</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="text-sm font-medium">
@@ -255,12 +260,11 @@ export default function CreateOrderPage() {
         </div>
       </div>
 
-      {/* Contenido principal con scroll */}
-      <div className="flex-1 overflow-hidden">
+      <div className="mx-auto flex-1 overflow-hidden pl-4">
         <ScrollArea className="h-full pr-4">
           <div className="space-y-8 pb-20">
-            {Object.entries(categorizedProducts).map(([category, products], index) => (
-              <div key={category + index} className="fade-in">
+            {Object.entries(categorizedProducts).map(([category, products], i) => (
+              <div key={category + i} className="fade-in">
                 <div className="mb-4 flex items-center">
                   {getCategoryIcon(category)}
                   <h2 className="text-xl font-semibold">{category}</h2>
@@ -275,6 +279,7 @@ export default function CreateOrderPage() {
                       quantity={getItemQuantity(product.id)}
                       onIncrement={() => incrementQuantity(product)}
                       onDecrement={() => decrementQuantity(product)}
+                      updateOrderItem={(quantity) => updateOrderItem(product, quantity)}
                     />
                   ))}
                 </div>
@@ -284,27 +289,26 @@ export default function CreateOrderPage() {
         </ScrollArea>
       </div>
 
-      {/* Footer fijo */}
-      <div className="sticky bottom-0 left-0 right-0 mt-auto border-t bg-background p-4">
+      <div className="sticky bottom-0 left-0 right-0 mt-auto border-t bg-background p-2 md:p-4 ">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="w-full md:w-auto">
-            <div className="text-sm text-muted-foreground">Total Order Value</div>
-            <div className="text-2xl font-bold">${calculateTotal().toFixed(2)}</div>
+          <div className="flex w-full items-center space-x-6 md:w-auto md:flex-col">
+            <div className="text-lg text-muted-foreground">Total de la orden</div>
+            <div className="text-4xl font-bold">${calculateTotal().toFixed(2)}</div>
           </div>
-          <div className="flex w-full gap-4 md:w-auto">
+          <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
             <Button
               variant="outline"
               size="lg"
-              className="flex-1 md:flex-none"
+              className="flex-1 py-2 md:h-14 md:w-60 md:flex-none md:py-5"
               onClick={handleNegotiatePrice}
               disabled={isSubmitting || orderItems.length === 0}
             >
               <Tag className="mr-2 h-5 w-5" />
-              Negotiate Price
+              <span className="text-lg"> Negociar Precio</span>
             </Button>
             <Button
               size="lg"
-              className="flex-1 bg-emerald-500 md:flex-none"
+              className="flex-1 bg-emerald-500 py-2 md:h-14 md:w-60 md:flex-none md:p-0 md:py-5"
               onClick={handleCreateOrder}
               disabled={isSubmitting || orderItems.length === 0}
             >
@@ -313,7 +317,7 @@ export default function CreateOrderPage() {
               ) : (
                 <>
                   <ShoppingCart className="mr-2 h-5 w-5" />
-                  Create Order
+                  <span className="text-lg"> Crear Orden</span>
                 </>
               )}
             </Button>
@@ -324,28 +328,55 @@ export default function CreateOrderPage() {
   );
 }
 
-// Componente para mostrar un producto individual
+// Actualizar la interfaz ProductCardProps para incluir updateOrderItem
 interface ProductCardProps {
   product: Product;
   category: string;
   quantity: number;
   onIncrement: () => void;
   onDecrement: () => void;
+  updateOrderItem: (quantity: number) => void;
 }
 
-function ProductCard({ product, category, quantity, onIncrement, onDecrement }: ProductCardProps) {
+// Componente para mostrar un producto individual
+// Modificar el componente ProductCard para incluir un input en lugar de solo mostrar la cantidad
+function ProductCard({
+  product,
+  category,
+  quantity,
+  onIncrement,
+  onDecrement,
+  updateOrderItem,
+}: ProductCardProps) {
   const isInCart = quantity > 0;
+
+  // Función para manejar cambios en el input
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // // Si está vacío, establecer a 0
+    // if (!value) {
+    //   updateOrderItem(0);
+    //   return;
+    // }
+
+    const newQuantity = Number(value);
+
+    if (!isNaN(newQuantity) && newQuantity >= 0) {
+      updateOrderItem(newQuantity);
+    }
+  };
 
   // Obtener el icono según la categoría
   const getProductIcon = (category: string) => {
     switch (category) {
       case "Frutas y Verduras":
-        return <Grape className="h-10 w-10 text-neutral-600" />;
-      case "Hierbas y Especias":
-        return <Wheat className="h-10 w-10 text-neutral-600" />;
+        return <Grape className="h-10 w-10 text-neutral-700" />;
+      case "Hierbas":
+        return <Wheat className="h-10 w-10 text-neutral-700" />;
       case "Otros":
       default:
-        return <ChefHat className="h-10 w-10 text-neutral-600" />;
+        return <ChefHat className="h-10 w-10 text-neutral-700" />;
     }
   };
 
@@ -356,57 +387,55 @@ function ProductCard({ product, category, quantity, onIncrement, onDecrement }: 
         isInCart ? "border-primary/50 shadow-md" : ""
       )}
     >
-      <CardContent className="p-0">
-        <div className="flex items-start p-4">
-          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-md bg-emerald-100">
+      <CardContent className="grid grid-cols-1 items-center justify-center p-0 md:grid-cols-3">
+        <div className="flex items-start p-4 md:col-span-2">
+          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-md bg-emerald-400">
             {getProductIcon(category)}
           </div>
           <div className="ml-4 flex-1">
             <h3 className="font-medium">{product.name}</h3>
             <p className="line-clamp-2 text-sm text-muted-foreground">
               {product.description ||
-                `${product.unit === "kilogram" ? "Sold by weight" : "Sold by unit"}`}
+                `${product.unit === "kilogram" ? "Venta por peso" : "Venta por unidad"}`}
             </p>
             <div className="mt-2 flex items-center justify-between">
-              <div className="font-semibold">${product.price.toFixed(2)}</div>
-              <div className="text-xs text-muted-foreground">
-                Unidad mínima: {product.unit === "kilogram" ? `${product.step}kg` : "1 und"}
+              <div className="font-semibold">
+                ${product.price.toFixed(2)} por {product.unit === "kilogram" ? "kg" : "unidad"}
               </div>
+              <div className="text-xs text-muted-foreground"></div>
             </div>
           </div>
         </div>
+        <div className="flex h-12 items-center justify-center md:h-20 md:flex-shrink">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            onClick={onDecrement}
+            disabled={quantity === 0}
+          >
+            <Minus className="h-4 w-4" />
+            <span className="sr-only">-</span>
+          </Button>
 
-        <div className="flex items-center justify-between border-t  px-3 pt-3">
-          <div className="text-sm">
-            {/* <span className="text-muted-foreground">Available:</span> {product.quantity}{" "}
-            {product.unit === "kilogram" ? "kg" : "units"} */}
-          </div>
-          <div className="flex items-center">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              onClick={onDecrement}
-              disabled={quantity === 0}
-            >
-              <Minus className="h-4 w-4" />
-              <span className="sr-only">Decrease quantity</span>
-            </Button>
+          <input
+            type="number"
+            min="0"
+            value={quantity}
+            onChange={handleQuantityChange}
+            className="mx-1 h-8 w-16 rounded-md border border-input bg-background px-2 text-center"
+            aria-label="Cantidad"
+          />
 
-            <div className="w-16 text-center font-medium">
-              {quantity > 0 ? quantity : 0} {product.unit === "kilogram" ? "kg" : ""}
-            </div>
-
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              onClick={onIncrement}
-            >
-              <Plus className="h-4 w-4" />
-              <span className="sr-only">Increase quantity</span>
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            onClick={onIncrement}
+          >
+            <Plus className="h-4 w-4" />
+            <span className="sr-only">+</span>
+          </Button>
         </div>
       </CardContent>
     </Card>

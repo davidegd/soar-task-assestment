@@ -15,6 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: "SOAR Dashboard | Manage Your Finances",
   description:
     "A comprehensive financial dashboard for managing your finances, cards, and transactions",
@@ -25,6 +26,27 @@ export const metadata: Metadata = {
     description: "Manage your finances with our comprehensive dashboard",
     type: "website",
     siteName: "Soar Task Fintech",
+=======
+  title: "MUY Panama",
+  description: "One stock shop for restaurants in Panama",
+  keywords: [
+    "food",
+    "delivery",
+    "restaurants",
+    "fruits",
+    "vegetables",
+    "herbs",
+    "spices",
+    "groceries",
+    "panama",
+  ],
+  authors: [{ name: "MUY Team" }],
+  openGraph: {
+    title: "MUY Panama",
+    description: "One stock shop for restaurants in Panama",
+    type: "website",
+    siteName: "MUY Panama",
+>>>>>>> 23b0433 (Implement create order page)
   },
 };
 
@@ -47,7 +69,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {/* <Suspense fallback={<div className="h-20 w-full animate-pulse bg-background" />}>
                   <Header />
                 </Suspense> */}
+<<<<<<< HEAD
                 <main className="page-transition smooth-scroll flex-1 overflow-auto bg-mainBackground p-8">
+=======
+                <main className="page-transition smooth-scroll flex-1 overflow-auto bg-mainBackground">
+>>>>>>> 23b0433 (Implement create order page)
                   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
                 </main>
               </div>
