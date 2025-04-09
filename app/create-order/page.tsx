@@ -1,24 +1,11 @@
 "use client";
 
-<<<<<<< HEAD
-=======
 import type React from "react";
 
->>>>>>> 23b0433 (Implement create order page)
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import {
-  ShoppingCart,
-  Plus,
-  Minus,
-  Tag,
-  Cherry,
-  Wheat,
-  EggFried,
-  Grape,
-  ChefHat,
-} from "lucide-react";
+import { ShoppingCart, Plus, Minus, Tag, Wheat, Grape, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
