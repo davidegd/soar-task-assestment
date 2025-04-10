@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import { ShoppingCart, Plus, Minus, Tag, Wheat, Grape, ChefHat } from "lucide-react"
@@ -20,7 +20,6 @@ interface OrderItem {
   quantity: number
 }
 
-// Función para obtener el icono de categoría
 const decodeShortUrl = (encoded: string) => {
   try {
     const decoded = atob(encoded.replace(/-/g, "+").replace(/_/g, "/"))
@@ -49,14 +48,12 @@ const getCategoryIcon = (category: string) => {
   }
 }
 
-// Necesitamos pasar la función updateOrderItem al componente ProductCard
 export default function CreateOrderPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [decodedParams, setDecodedParams] = useState<{ client_id: any; date_after: any } | null>(
     null
   )
-  // Usar directamente el hook de useAlegraProducts
   const { isLoading: isLoadingAlegra, fetchProducts, categorizedProducts } = useAlegraProducts()
 
   const [orderItems, setOrderItems] = useState<OrderItem[]>([])
@@ -71,7 +68,6 @@ export default function CreateOrderPage() {
         const decoded = decodeShortUrl(encoded)
         if (decoded) {
           const { client_id, date_after } = decoded
-          console.log(client_id, date_after)
           setDecodedParams({ client_id: client_id, date_after })
         }
       } catch (error) {
@@ -79,21 +75,22 @@ export default function CreateOrderPage() {
       }
     }
   }, [searchParams])
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        if (decodedParams && decodedParams.client_id && decodedParams.date_after)
-          await fetchProducts(decodedParams.client_id, decodedParams.date_after)
-      } catch (error) {
-        console.error("Error loading products:", error)
-        toast.error("Error loading products", {
-          description: "Failed to load product data. Please try again.",
-        })
-      }
-    }
 
+  const loadData = useCallback(async () => {
+    try {
+      if (decodedParams && decodedParams.client_id && decodedParams.date_after)
+        await fetchProducts(decodedParams.client_id, decodedParams.date_after)
+    } catch (error) {
+      console.error("Error loading products:", error)
+      toast.error("Error loading products", {
+        description: "Failed to load product data. Please try again.",
+      })
+    }
+  }, [fetchProducts, decodedParams])
+
+  useEffect(() => {
     loadData()
-  }, [fetchProducts])
+  }, [decodedParams])
 
   // Función para añadir o actualizar un producto en la orden
   const updateOrderItem = (product: Product, quantity: number) => {
