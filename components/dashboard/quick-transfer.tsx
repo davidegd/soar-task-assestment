@@ -1,38 +1,38 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { ChevronRight, Send, User2Icon } from "lucide-react";
-import type { Contact } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useApp } from "@/context/app-context";
-import { cn } from "@/lib/utils";
+import { useState } from "react"
+import { ChevronRight, Send, User2Icon } from "lucide-react"
+import type { Contact } from "@/types"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useApp } from "@/context/app-context"
+import { cn } from "@/lib/utils"
 
 interface QuickTransferProps {
-  contacts: Contact[];
-  className?: string;
+  contacts: Contact[]
+  className?: string
 }
 
 export function QuickTransfer({ contacts, className }: QuickTransferProps) {
-  const { transferMoney } = useApp();
-  const [selectedContact, setSelectedContact] = useState<string | null>(null);
-  const [amount, setAmount] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { transferMoney } = useApp()
+  const [selectedContact, setSelectedContact] = useState<string | null>(null)
+  const [amount, setAmount] = useState<string>("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleTransfer = async () => {
-    if (!selectedContact || !amount || isNaN(Number.parseFloat(amount))) return;
+    if (!selectedContact || !amount || isNaN(Number.parseFloat(amount))) return
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await transferMoney(selectedContact, Number.parseFloat(amount));
-      setAmount("");
-      setSelectedContact(null);
+      await transferMoney(selectedContact, Number.parseFloat(amount))
+      setAmount("")
+      setSelectedContact(null)
     } catch (error) {
-      console.error("Transfer failed:", error);
+      console.error("Transfer failed:", error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className={cn("flex h-64 flex-col justify-center", className)}>
@@ -70,8 +70,8 @@ export function QuickTransfer({ contacts, className }: QuickTransferProps) {
           placeholder="123.50"
           value={amount}
           onChange={(e) => {
-            const value = e.target.value.replace(/[^0-9.]/g, "");
-            setAmount(value);
+            const value = e.target.value.replace(/[^0-9.]/g, "")
+            setAmount(value)
           }}
           className="-mr-8 h-12 flex-1 rounded-bl-full rounded-tl-full bg-mainBackground px-6 py-2 focus-visible:border-none focus-visible:ring-0"
         />
@@ -85,5 +85,5 @@ export function QuickTransfer({ contacts, className }: QuickTransferProps) {
         </Button>
       </div>
     </div>
-  );
+  )
 }

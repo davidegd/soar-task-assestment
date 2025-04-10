@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import { CardItem } from "@/components/dashboard/card-item";
+import { CardItem } from "@/components/dashboard/card-item"
 import {
   DynamicBalanceHistoryChart,
   DynamicExpenseStatisticsChart,
   DynamicWeeklyActivityChart,
-} from "@/components/dashboard/charts/dynamic-chart";
-import { QuickTransfer } from "@/components/dashboard/quick-transfer";
-import { TransactionItem } from "@/components/dashboard/transaction-item";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useApp } from "@/context/app-context";
-import Link from "next/link";
-import React from "react";
-import { memo, Suspense } from "react";
+} from "@/components/dashboard/charts/dynamic-chart"
+import { QuickTransfer } from "@/components/dashboard/quick-transfer"
+import { TransactionItem } from "@/components/dashboard/transaction-item"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApp } from "@/context/app-context"
+import Link from "next/link"
+import React from "react"
+import { memo, Suspense } from "react"
 
-const MemoizedCardItem = memo(CardItem);
-const MemoizedTransactionItem = memo(TransactionItem);
-const ChartFallback = () => <Skeleton className="h-64 w-full rounded-xl" />;
+const MemoizedCardItem = memo(CardItem)
+const MemoizedTransactionItem = memo(TransactionItem)
+const ChartFallback = () => <Skeleton className="h-64 w-full rounded-xl" />
 
 export default function DashboardPage() {
   const {
@@ -27,7 +27,7 @@ export default function DashboardPage() {
     balanceHistoryData,
     isLoading,
     contacts,
-  } = useApp();
+  } = useApp()
 
   if (isLoading) {
     return (
@@ -56,7 +56,7 @@ export default function DashboardPage() {
           <Skeleton className="h-80 rounded-xl" aria-hidden="true" />
         </div>
       </div>
-    );
+    )
   }
   return (
     <div className="space-y-8">
@@ -207,5 +207,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,13 +1,13 @@
-"use client";
-import { CardItem } from "@/components/dashboard/card-item";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useApp } from "@/context/app-context";
-import { Card } from "@/types";
-import { memo } from "react";
+"use client"
+import { CardItem } from "@/components/dashboard/card-item"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApp } from "@/context/app-context"
+import { Card } from "@/types"
+import { memo } from "react"
 
 export default function CardsPage() {
-  const { cards, isLoading } = useApp();
-  const MemoizedCardItem = memo(CardItem);
+  const { cards, isLoading } = useApp()
+  const MemoizedCardItem = memo(CardItem)
 
   if (isLoading) {
     return (
@@ -16,7 +16,7 @@ export default function CardsPage() {
         <Skeleton className="h-48 rounded-xl" />
         <Skeleton className="h-48 rounded-xl" />
       </div>
-    );
+    )
   }
 
   return (
@@ -29,5 +29,5 @@ export default function CardsPage() {
         ))}
       </div>
     </>
-  );
+  )
 }

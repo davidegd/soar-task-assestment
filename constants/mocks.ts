@@ -1,5 +1,5 @@
-import { Card, Contact, Transaction, User } from "@/types";
-import UserAvatar from "@/assets/images/user.png";
+import { Card, Contact, Transaction, User } from "@/types"
+import UserAvatar from "@/assets/images/user.png"
 
 export const mockCards: Card[] = [
   {
@@ -29,7 +29,7 @@ export const mockCards: Card[] = [
     type: "visa",
     isDark: false,
   },
-];
+]
 
 export const mockTransactions: Transaction[] = [
   {
@@ -56,7 +56,7 @@ export const mockTransactions: Transaction[] = [
     type: "deposit",
     icon: "user",
   },
-];
+]
 
 export const mockUser: User = {
   id: "1",
@@ -70,7 +70,7 @@ export const mockUser: User = {
   city: "San Jose",
   postalCode: "45962",
   country: "USA",
-};
+}
 
 export const mockContacts: Contact[] = [
   {
@@ -88,7 +88,7 @@ export const mockContacts: Contact[] = [
     name: "Workman",
     role: "Designer",
   },
-];
+]
 
 export const mockChartData = {
   weeklyActivity: {
@@ -129,4 +129,4 @@ export const mockChartData = {
       },
     ],
   },
-};
+}

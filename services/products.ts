@@ -1,16 +1,16 @@
-import axios from "axios";
-import { Product, ProductGroup } from "./product-service";
+import axios from "axios"
+import { Product, ProductGroup } from "./product-service"
 
 // URL base para las peticiones API
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.alegra.com/api/v1/";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.alegra.com/api/v1/"
 
 // Función para obtener el header de autenticación
 const getAuthHeader = () => {
   return (
     process.env.NEXT_PUBLIC_ALEGRA_API_KEY ||
     "Basic bXV5cGFuYW1hQGdtYWlsLmNvbTo2MzU1MWZmMTE1ODA1MTg0MjRlYw=="
-  );
-};
+  )
+}
 
 export const getProductsFromInvoices = async (
   client_id: string,
@@ -25,48 +25,48 @@ export const getProductsFromInvoices = async (
           "Content-Type": "application/json",
         },
       }
-    );
+    )
 
-    const items = response.data.flatMap((invoice: any) => invoice.items);
-    return items;
+    const items = response.data.flatMap((invoice: any) => invoice.items)
+    return items
   } catch (error) {
-    console.error("Error fetching products from invoices:", error);
-    return [];
+    console.error("Error fetching products from invoices:", error)
+    return []
   }
-};
+}
 
 /**
  * Agrupa los productos por remisión/factura
  */
 export const groupProductsByInvoice = (products: any[]): ProductGroup[] => {
   // Crear un mapa para agrupar productos por remisión
-  const invoiceMap = new Map<string, any[]>();
+  const invoiceMap = new Map<string, any[]>()
 
   // Agrupar productos por remisión
   products.forEach((product) => {
-    if (!product.remission) return; // Ignorar productos sin remisión
+    if (!product.remission) return // Ignorar productos sin remisión
 
-    const key = product.remission;
+    const key = product.remission
     if (!invoiceMap.has(key)) {
-      invoiceMap.set(key, []);
+      invoiceMap.set(key, [])
     }
-    invoiceMap.get(key)?.push(product);
-  });
+    invoiceMap.get(key)?.push(product)
+  })
 
   // Convertir el mapa a un array de ProductGroup
-  const productGroups: ProductGroup[] = [];
+  const productGroups: ProductGroup[] = []
   invoiceMap.forEach((items, remission) => {
     if (items.length > 0) {
       productGroups.push({
         remission: remission,
         remissionNumber: items[0].remissionNumber || remission,
         items: items,
-      });
+      })
     }
-  });
+  })
 
-  return productGroups;
-};
+  return productGroups
+}
 
 /**
  * Obtiene un grupo de productos específico a partir de las facturas de un cliente
@@ -77,22 +77,22 @@ export const fetchClientProductGroup = async (
 ): Promise<ProductGroup | null> => {
   try {
     if (!params?.clientId || !params?.dateAfter) {
-      throw new Error("Client ID and date are required");
+      throw new Error("Client ID and date are required")
     }
 
     // Obtener los productos de las facturas del cliente
-    const products = await getProductsFromInvoices(params.clientId, params.dateAfter);
+    const products = await getProductsFromInvoices(params.clientId, params.dateAfter)
 
     // Si no hay productos, retornar null
     if (!products || products.length === 0) {
-      return null;
+      return null
     }
 
     // Agrupar productos por factura
-    const productGroups = groupProductsByInvoice(products);
+    const productGroups = groupProductsByInvoice(products)
 
     // Buscar el grupo específico por ID
-    const group = productGroups.find((group) => group.remission === id);
+    const group = productGroups.find((group) => group.remission === id)
 
     // Si no encontramos el grupo específico pero tenemos productos,
     // creamos un grupo con todos los productos (para propósitos de demostración)
@@ -101,34 +101,34 @@ export const fetchClientProductGroup = async (
         remission: id,
         remissionNumber: `INV-${id}`,
         items: products,
-      };
+      }
     }
 
-    return group || null;
+    return group || null
   } catch (error) {
-    console.error(`Error fetching client product group with ID ${id}:`, error);
-    return null;
+    console.error(`Error fetching client product group with ID ${id}:`, error)
+    return null
   }
-};
+}
 
 /**
  * Obtiene todos los productos de las facturas de un cliente
  */
 export const fetchClientProducts = async (params?: {
-  clientId?: string | null;
-  dateAfter?: string | null;
+  clientId?: string | null
+  dateAfter?: string | null
 }): Promise<Product[]> => {
   try {
     if (!params?.clientId || !params?.dateAfter) {
-      throw new Error("Client ID and date are required");
+      throw new Error("Client ID and date are required")
     }
 
     // Obtener los productos de las facturas del cliente
-    const products = await getProductsFromInvoices(params.clientId, params.dateAfter);
+    const products = await getProductsFromInvoices(params.clientId, params.dateAfter)
 
-    return products;
+    return products
   } catch (error) {
-    console.error("Error fetching client products:", error);
-    return [];
+    console.error("Error fetching client products:", error)
+    return []
   }
-};
+}

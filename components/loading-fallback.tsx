@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function LoadingFallback() {
   return (
@@ -28,7 +28,7 @@ export function LoadingFallback() {
         <Skeleton className="h-80 rounded-xl" />
       </div>
     </div>
-  );
+  )
 }
 
 export function CardLoadingFallback() {
@@ -38,7 +38,7 @@ export function CardLoadingFallback() {
       <Skeleton className="h-48 rounded-xl" />
       <Skeleton className="h-48 rounded-xl" />
     </div>
-  );
+  )
 }
 
 export function SettingsLoadingFallback() {
@@ -63,5 +63,5 @@ export function SettingsLoadingFallback() {
         <Skeleton className="ml-auto h-10 w-36" />
       </div>
     </div>
-  );
+  )
 }

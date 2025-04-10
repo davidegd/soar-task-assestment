@@ -1,214 +1,214 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
-import { ShoppingCart, Plus, Minus, Tag, Wheat, Grape, ChefHat } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { useAlegraProducts } from "@/hooks/use-alegra-products";
-import type { Product } from "@/services/product-service";
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { toast } from "sonner"
+import { ShoppingCart, Plus, Minus, Tag, Wheat, Grape, ChefHat } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
+import { useAlegraProducts } from "@/hooks/use-alegra-products"
+import type { Product } from "@/services/product-service"
 
 interface OrderItem {
-  product: Product;
-  quantity: number;
+  product: Product
+  quantity: number
 }
 
 // Función para obtener el icono de categoría
 const decodeShortUrl = (encoded: string) => {
   try {
-    const decoded = atob(encoded.replace(/-/g, "+").replace(/_/g, "/"));
+    const decoded = atob(encoded.replace(/-/g, "+").replace(/_/g, "/"))
 
-    const params = new URLSearchParams(decoded);
+    const params = new URLSearchParams(decoded)
 
     return {
       client_id: params.get("c") || "",
       date_after: params.get("d")?.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3") || "",
-    };
+    }
   } catch (error) {
-    console.error("Error decoding:", error);
-    return null;
+    console.error("Error decoding:", error)
+    return null
   }
-};
+}
 
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case "Frutas y Verduras":
-      return <Grape className="mr-2 h-5 w-5 text-emerald-400" />;
+      return <Grape className="mr-2 h-5 w-5 text-emerald-400" />
     case "Hierbas y Especias":
-      return <Wheat className="mr-2 h-5 w-5 text-emerald-400" />;
+      return <Wheat className="mr-2 h-5 w-5 text-emerald-400" />
     case "Otros":
     default:
-      return <ChefHat className="mr-2 h-5 w-5 text-emerald-400" />;
+      return <ChefHat className="mr-2 h-5 w-5 text-emerald-400" />
   }
-};
+}
 
 // Necesitamos pasar la función updateOrderItem al componente ProductCard
 export default function CreateOrderPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [decodedParams, setDecodedParams] = useState<{ client_id: any; date_after: any } | null>(
     null
-  );
+  )
   // Usar directamente el hook de useAlegraProducts
-  const { isLoading: isLoadingAlegra, fetchProducts, categorizedProducts } = useAlegraProducts();
+  const { isLoading: isLoadingAlegra, fetchProducts, categorizedProducts } = useAlegraProducts()
 
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const isLoading = isLoadingAlegra || isSubmitting;
+  const isLoading = isLoadingAlegra || isSubmitting
 
   useEffect(() => {
-    const encoded = searchParams.get("p");
+    const encoded = searchParams.get("p")
     if (encoded) {
       try {
-        const decoded = decodeShortUrl(encoded);
+        const decoded = decodeShortUrl(encoded)
         if (decoded) {
-          const { client_id, date_after } = decoded;
-          console.log(client_id, date_after);
-          setDecodedParams({ client_id: client_id, date_after });
+          const { client_id, date_after } = decoded
+          console.log(client_id, date_after)
+          setDecodedParams({ client_id: client_id, date_after })
         }
       } catch (error) {
-        console.error("Invalid base64 or JSON:", error);
+        console.error("Invalid base64 or JSON:", error)
       }
     }
-  }, [searchParams]);
+  }, [searchParams])
   useEffect(() => {
     const loadData = async () => {
       try {
         if (decodedParams && decodedParams.client_id && decodedParams.date_after)
-          await fetchProducts(decodedParams.client_id, decodedParams.date_after);
+          await fetchProducts(decodedParams.client_id, decodedParams.date_after)
       } catch (error) {
-        console.error("Error loading products:", error);
+        console.error("Error loading products:", error)
         toast.error("Error loading products", {
           description: "Failed to load product data. Please try again.",
-        });
+        })
       }
-    };
+    }
 
-    loadData();
-  }, [fetchProducts]);
+    loadData()
+  }, [fetchProducts])
 
   // Función para añadir o actualizar un producto en la orden
   const updateOrderItem = (product: Product, quantity: number) => {
     setOrderItems((prevItems) => {
-      const existingItemIndex = prevItems.findIndex((item) => item.product.id === product.id);
+      const existingItemIndex = prevItems.findIndex((item) => item.product.id === product.id)
 
       if (existingItemIndex >= 0) {
         // Si el producto ya está en la orden, actualizar cantidad
-        const updatedItems = [...prevItems];
+        const updatedItems = [...prevItems]
 
         // Si la cantidad es 0, eliminar el producto
         if (quantity <= 0) {
-          updatedItems.splice(existingItemIndex, 1);
-          return updatedItems;
+          updatedItems.splice(existingItemIndex, 1)
+          return updatedItems
         }
 
         // Actualizar cantidad
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
           quantity,
-        };
-        return updatedItems;
+        }
+        return updatedItems
       } else {
         // Si el producto no está en la orden y la cantidad es mayor que 0, añadirlo
         if (quantity > 0) {
-          return [...prevItems, { product, quantity }];
+          return [...prevItems, { product, quantity }]
         }
-        return prevItems;
+        return prevItems
       }
-    });
-  };
+    })
+  }
 
   // Función para incrementar la cantidad de un producto
   const incrementQuantity = (product: Product) => {
-    const currentItem = orderItems.find((item) => item.product.id === product.id);
-    const currentQuantity = currentItem ? currentItem.quantity : 0;
+    const currentItem = orderItems.find((item) => item.product.id === product.id)
+    const currentQuantity = currentItem ? currentItem.quantity : 0
     // Usar siempre un paso de 1, independientemente de la unidad
-    const newQuantity = currentQuantity + product.step;
+    const newQuantity = currentQuantity + product.step
 
     // No verificar límite de stock, permitir cualquier cantidad
-    updateOrderItem(product, newQuantity);
-  };
+    updateOrderItem(product, newQuantity)
+  }
 
   // Función para decrementar la cantidad de un producto
   const decrementQuantity = (product: Product) => {
-    const currentItem = orderItems.find((item) => item.product.id === product.id);
-    const currentQuantity = currentItem ? currentItem.quantity : 0;
+    const currentItem = orderItems.find((item) => item.product.id === product.id)
+    const currentQuantity = currentItem ? currentItem.quantity : 0
 
     // Usar siempre un paso de 1, independientemente de la unidad
-    const newQuantity = currentQuantity - product.step;
+    const newQuantity = currentQuantity - product.step
 
     // Verificar que no sea menor que 0
     if (newQuantity > 0) {
-      updateOrderItem(product, newQuantity);
+      updateOrderItem(product, newQuantity)
     } else {
-      updateOrderItem(product, 0); // Eliminar el producto si la cantidad es 0 o menor
+      updateOrderItem(product, 0) // Eliminar el producto si la cantidad es 0 o menor
     }
-  };
+  }
 
   // Calcular el total de la orden
   const calculateTotal = () => {
     return orderItems.reduce((total, item) => {
-      return total + item.product.price * item.quantity;
-    }, 0);
-  };
+      return total + item.product.price * item.quantity
+    }, 0)
+  }
 
   // Manejar la creación de la orden
   const handleCreateOrder = () => {
     if (orderItems.length === 0) {
       toast.error("Empty order", {
         description: "Please add at least one product to your order",
-      });
-      return;
+      })
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     // Simular una petición a la API
     setTimeout(() => {
       toast.success("Order created successfully", {
         description: `Order total: $${calculateTotal().toFixed(2)}`,
-      });
-      setOrderItems([]);
-      setIsSubmitting(false);
+      })
+      setOrderItems([])
+      setIsSubmitting(false)
 
       // Redirigir al dashboard después de crear la orden
-      router.push("/dashboard");
-    }, 1500);
-  };
+      router.push("/dashboard")
+    }, 1500)
+  }
 
   // Manejar la negociación de precio
   const handleNegotiatePrice = () => {
     if (orderItems.length === 0) {
       toast.error("Empty order", {
         description: "Please add at least one product to your order",
-      });
-      return;
+      })
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     // Simular una petición a la API
     setTimeout(() => {
       toast.success("Negotiation request sent", {
         description: `Request sent with total: $${calculateTotal().toFixed(2)}`,
-      });
-      setIsSubmitting(false);
-    }, 1500);
-  };
+      })
+      setIsSubmitting(false)
+    }, 1500)
+  }
 
   // Obtener la cantidad actual de un producto en la orden
   const getItemQuantity = (productId: string) => {
-    const item = orderItems.find((item) => item.product.id === productId);
-    return item ? item.quantity : 0;
-  };
+    const item = orderItems.find((item) => item.product.id === productId)
+    return item ? item.quantity : 0
+  }
 
   // Mostrar un estado de carga mientras se obtienen los datos
   if (isLoading) {
@@ -227,7 +227,7 @@ export default function CreateOrderPage() {
           <Skeleton className="h-12 w-full bg-neutral-200" />
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -312,17 +312,17 @@ export default function CreateOrderPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Actualizar la interfaz ProductCardProps para incluir updateOrderItem
 interface ProductCardProps {
-  product: Product;
-  category: string;
-  quantity: number;
-  onIncrement: () => void;
-  onDecrement: () => void;
-  updateOrderItem: (quantity: number) => void;
+  product: Product
+  category: string
+  quantity: number
+  onIncrement: () => void
+  onDecrement: () => void
+  updateOrderItem: (quantity: number) => void
 }
 
 // Componente para mostrar un producto individual
@@ -335,11 +335,11 @@ function ProductCard({
   onDecrement,
   updateOrderItem,
 }: ProductCardProps) {
-  const isInCart = quantity > 0;
+  const isInCart = quantity > 0
 
   // Función para manejar cambios en el input
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value
 
     // // Si está vacío, establecer a 0
     // if (!value) {
@@ -347,25 +347,25 @@ function ProductCard({
     //   return;
     // }
 
-    const newQuantity = Number(value);
+    const newQuantity = Number(value)
 
     if (!isNaN(newQuantity) && newQuantity >= 0) {
-      updateOrderItem(newQuantity);
+      updateOrderItem(newQuantity)
     }
-  };
+  }
 
   // Obtener el icono según la categoría
   const getProductIcon = (category: string) => {
     switch (category) {
       case "Frutas y Verduras":
-        return <Grape className="h-10 w-10 text-neutral-700" />;
+        return <Grape className="h-10 w-10 text-neutral-700" />
       case "Hierbas":
-        return <Wheat className="h-10 w-10 text-neutral-700" />;
+        return <Wheat className="h-10 w-10 text-neutral-700" />
       case "Otros":
       default:
-        return <ChefHat className="h-10 w-10 text-neutral-700" />;
+        return <ChefHat className="h-10 w-10 text-neutral-700" />
     }
-  };
+  }
 
   return (
     <Card
@@ -426,5 +426,5 @@ function ProductCard({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

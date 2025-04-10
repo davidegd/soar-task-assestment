@@ -1,35 +1,35 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useCallback, useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useApp } from "@/context/app-context";
-import type { User } from "@/types";
-import { fetchUser } from "@/services/api";
-import { EditableAvatar } from "@/components/settings/edit-avatar";
-import { UserForm, UserFormValues } from "@/components/settings/user-form";
+import { useCallback, useEffect, useState } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useApp } from "@/context/app-context"
+import type { User } from "@/types"
+import { fetchUser } from "@/services/api"
+import { EditableAvatar } from "@/components/settings/edit-avatar"
+import { UserForm, UserFormValues } from "@/components/settings/user-form"
 
 const ActiveTabClassName =
-  "text-muted-foreground  data-[state=active]:border-b-2 data-[state=active]:text-primary data-[state=active]:!border-primary data-[state=active]:!border-t-0 data-[state=active]:!border-r-0 data-[state=active]:!border-l-0  data-[state=active]:!rounded-none data-[state=active]:!bg-transparent";
+  "text-muted-foreground  data-[state=active]:border-b-2 data-[state=active]:text-primary data-[state=active]:!border-primary data-[state=active]:!border-t-0 data-[state=active]:!border-r-0 data-[state=active]:!border-l-0  data-[state=active]:!rounded-none data-[state=active]:!bg-transparent"
 
 export default function SettingsPage() {
-  const { user, updateUserProfile } = useApp();
-  const [formData, setFormData] = useState<Partial<User>>(user || {});
+  const { user, updateUserProfile } = useApp()
+  const [formData, setFormData] = useState<Partial<User>>(user || {})
 
   const handleSubmit = useCallback(async (data: UserFormValues) => {
-    await updateUserProfile(data);
-  }, []);
+    await updateUserProfile(data)
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchUser();
-      setFormData(data);
-    };
-    if (!user) {
-      fetchData();
+      const data = await fetchUser()
+      setFormData(data)
     }
-  }, [user]);
+    if (!user) {
+      fetchData()
+    }
+  }, [user])
 
   if (!user) {
     return (
@@ -39,7 +39,7 @@ export default function SettingsPage() {
           <p className="text-muted-foreground">Please wait while we load your profile.</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -89,7 +89,7 @@ export default function SettingsPage() {
                   setFormData({
                     ...formData,
                     avatar: URL.createObjectURL(file),
-                  });
+                  })
                 }}
               />
             </div>
@@ -114,5 +114,5 @@ export default function SettingsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }

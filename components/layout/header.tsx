@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Bell, SearchIcon, Settings } from "lucide-react";
-import { MobileNav } from "@/components/layout/sidebar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { usePathname } from "next/navigation"
+import { Bell, SearchIcon, Settings } from "lucide-react"
+import { MobileNav } from "@/components/layout/sidebar"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,25 +15,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useApp } from "@/context/app-context";
-import UserAvatarPlaceholder from "@/assets/images/user.png";
+} from "@/components/ui/dropdown-menu"
+import { useApp } from "@/context/app-context"
+import UserAvatarPlaceholder from "@/assets/images/user.png"
 
 interface HeaderProps {
-  title?: string;
+  title?: string
 }
 
 export function Header({ title }: HeaderProps) {
-  const { user } = useApp();
-  const [notifications] = useState(2);
-  const pathname = usePathname();
+  const { user } = useApp()
+  const [notifications] = useState(2)
+  const pathname = usePathname()
 
   const pageTitle =
     title ||
     (() => {
-      if (pathname === "/dashboard") return "Overview";
-      return pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2);
-    })();
+      if (pathname === "/dashboard") return "Overview"
+      return pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2)
+    })()
 
   return (
     <header
@@ -127,5 +127,5 @@ export function Header({ title }: HeaderProps) {
         </div>
       </div>
     </header>
-  );
+  )
 }

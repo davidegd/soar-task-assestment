@@ -9,7 +9,7 @@ import {
   Landmark,
   Wallet,
   ShoppingCart,
-} from "lucide-react";
+} from "lucide-react"
 
 export function getNavigationItems(pathname: string) {
   return [
@@ -73,5 +73,5 @@ export function getNavigationItems(pathname: string) {
       icon: <ShoppingCart className="h-5 w-5" />,
       active: pathname === "/create-order",
     },
-  ];
+  ]
 }

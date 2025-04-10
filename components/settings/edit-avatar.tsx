@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useState, useRef } from "react";
-import Image from "next/image";
-import { Pencil } from "lucide-react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import UserAvatarPlaceholder from "@/assets/images/user.png";
+import { useState, useRef } from "react"
+import Image from "next/image"
+import { Pencil } from "lucide-react"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import UserAvatarPlaceholder from "@/assets/images/user.png"
 
 interface EditableAvatarProps {
-  src: string;
-  alt: string;
-  size?: number;
-  className?: string;
-  onImageChange?: (file: File) => Promise<void>;
+  src: string
+  alt: string
+  size?: number
+  className?: string
+  onImageChange?: (file: File) => Promise<void>
 }
 
 export function EditableAvatar({
@@ -25,45 +25,45 @@ export function EditableAvatar({
   className,
   onImageChange,
 }: EditableAvatarProps) {
-  const [isHovering, setIsHovering] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isHovering, setIsHovering] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleEditClick = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const file = e.target.files?.[0]
+    if (!file) return
 
     if (!file.type.startsWith("image/")) {
       toast.error("Invalid file type", {
         description: "Please select an image file",
-      });
-      return;
+      })
+      return
     }
 
     if (file.size > 5 * 1024 * 1024) {
       toast.error("File too large", {
         description: "Image must be less than 5MB",
-      });
-      return;
+      })
+      return
     }
 
     if (onImageChange) {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        await onImageChange(file);
-        toast.success("Profile picture loaded successfully");
+        await onImageChange(file)
+        toast.success("Profile picture loaded successfully")
       } catch (error) {
-        toast.error("Failed to load profile picture");
-        console.error("Error updating profile picture:", error);
+        toast.error("Failed to load profile picture")
+        console.error("Error updating profile picture:", error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  };
+  }
 
   return (
     <div
@@ -115,5 +115,5 @@ export function EditableAvatar({
         disabled={isLoading}
       />
     </div>
-  );
+  )
 }

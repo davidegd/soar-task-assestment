@@ -1,29 +1,29 @@
-"use client";
+"use client"
 
-import { useEffect, useRef } from "react";
-import { Chart, registerables } from "chart.js";
-import type { ChartData } from "@/types";
+import { useEffect, useRef } from "react"
+import { Chart, registerables } from "chart.js"
+import type { ChartData } from "@/types"
 
-Chart.register(...registerables);
+Chart.register(...registerables)
 
 interface WeeklyActivityChartProps {
-  data: ChartData;
-  className?: string;
+  data: ChartData
+  className?: string
 }
 
 export function WeeklyActivityChart({ data, className }: WeeklyActivityChartProps) {
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart | null>(null);
+  const chartRef = useRef<HTMLCanvasElement>(null)
+  const chartInstance = useRef<Chart | null>(null)
 
   useEffect(() => {
-    if (!chartRef.current) return;
+    if (!chartRef.current) return
 
     if (chartInstance.current) {
-      chartInstance.current.destroy();
+      chartInstance.current.destroy()
     }
 
-    const ctx = chartRef.current.getContext("2d");
-    if (!ctx) return;
+    const ctx = chartRef.current.getContext("2d")
+    if (!ctx) return
 
     chartInstance.current = new Chart(ctx, {
       type: "bar",
@@ -90,18 +90,18 @@ export function WeeklyActivityChart({ data, className }: WeeklyActivityChartProp
           },
         },
       },
-    });
+    })
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy();
+        chartInstance.current.destroy()
       }
-    };
-  }, [data]);
+    }
+  }, [data])
 
   return (
     <div className={className}>
       <canvas ref={chartRef} className="chart-container" />
     </div>
-  );
+  )
 }

@@ -1,29 +1,29 @@
-"use client";
+"use client"
 
-import { useEffect, useRef } from "react";
-import { Chart, registerables } from "chart.js";
-import type { ChartData } from "@/types";
+import { useEffect, useRef } from "react"
+import { Chart, registerables } from "chart.js"
+import type { ChartData } from "@/types"
 
-Chart.register(...registerables);
+Chart.register(...registerables)
 
 interface BalanceHistoryChartProps {
-  data: ChartData;
-  className?: string;
+  data: ChartData
+  className?: string
 }
 
 export function BalanceHistoryChart({ data, className }: BalanceHistoryChartProps) {
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart | null>(null);
+  const chartRef = useRef<HTMLCanvasElement>(null)
+  const chartInstance = useRef<Chart | null>(null)
 
   useEffect(() => {
-    if (!chartRef.current) return;
+    if (!chartRef.current) return
 
     if (chartInstance.current) {
-      chartInstance.current.destroy();
+      chartInstance.current.destroy()
     }
 
-    const ctx = chartRef.current.getContext("2d");
-    if (!ctx) return;
+    const ctx = chartRef.current.getContext("2d")
+    if (!ctx) return
 
     chartInstance.current = new Chart(ctx, {
       type: "line",
@@ -85,18 +85,18 @@ export function BalanceHistoryChart({ data, className }: BalanceHistoryChartProp
           },
         },
       },
-    });
+    })
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy();
+        chartInstance.current.destroy()
       }
-    };
-  }, [data]);
+    }
+  }, [data])
 
   return (
     <div className={className}>
       <canvas ref={chartRef} className="chart-container" />
     </div>
-  );
+  )
 }

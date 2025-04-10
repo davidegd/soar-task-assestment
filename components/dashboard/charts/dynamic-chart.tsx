@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import dynamic from "next/dynamic";
-import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const DynamicWeeklyActivityChart = dynamic(
   () =>
@@ -12,7 +12,7 @@ export const DynamicWeeklyActivityChart = dynamic(
     ssr: false,
     loading: () => <Skeleton className="h-64 w-full" />,
   }
-);
+)
 
 export const DynamicExpenseStatisticsChart = dynamic(
   () =>
@@ -23,7 +23,7 @@ export const DynamicExpenseStatisticsChart = dynamic(
     ssr: false,
     loading: () => <Skeleton className="h-64 w-full" />,
   }
-);
+)
 
 export const DynamicBalanceHistoryChart = dynamic(
   () =>
@@ -34,4 +34,4 @@ export const DynamicBalanceHistoryChart = dynamic(
     ssr: false,
     loading: () => <Skeleton className="h-64 w-full" />,
   }
-);
+)

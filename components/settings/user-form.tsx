@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, ChevronDown } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import type { User } from "@/types";
-import { toast } from "sonner";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { CalendarIcon, ChevronDown } from "lucide-react"
+import { format } from "date-fns"
+import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils"
+import type { User } from "@/types"
+import { toast } from "sonner"
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must have at least 2 characters"),
@@ -24,13 +24,13 @@ const profileSchema = z.object({
   presentAddress: z.string().min(5, "Address must have at least 5 characters"),
   city: z.string().min(2, "City must have at least 2 characters"),
   country: z.string().min(2, "Country must have at least 2 characters"),
-});
+})
 
-export type UserFormValues = z.infer<typeof profileSchema>;
+export type UserFormValues = z.infer<typeof profileSchema>
 
 interface UserFormProps {
-  user?: User;
-  onSubmit?: (data: UserFormValues) => Promise<void>;
+  user?: User
+  onSubmit?: (data: UserFormValues) => Promise<void>
 }
 
 export function UserForm({ user, onSubmit }: UserFormProps) {
@@ -49,26 +49,26 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
       country: user?.country || "",
     },
     mode: "onChange",
-  });
+  })
 
   async function handleSubmit(data: UserFormValues) {
     try {
       if (onSubmit) {
-        await onSubmit(data);
+        await onSubmit(data)
       } else {
-        console.log("Datos enviados:", data);
-        toast.success("Profile updated successfully");
+        console.log("Datos enviados:", data)
+        toast.success("Profile updated successfully")
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to update profile");
+      console.error("Error submitting form:", error)
+      toast.error("Failed to update profile")
     }
   }
 
-  const formFields = Object.keys(profileSchema.shape);
-  const halfLength = Math.ceil(formFields.length / 2);
-  const leftColumnFields = formFields.slice(0, halfLength);
-  const rightColumnFields = formFields.slice(halfLength);
+  const formFields = Object.keys(profileSchema.shape)
+  const halfLength = Math.ceil(formFields.length / 2)
+  const leftColumnFields = formFields.slice(0, halfLength)
+  const rightColumnFields = formFields.slice(halfLength)
 
   const renderField = (key: string) => (
     <div key={key} className="mb-4">
@@ -130,7 +130,7 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
         {form.formState.errors[key as keyof UserFormValues]?.message}
       </p>
     </div>
-  );
+  )
 
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)} className="w-full gap-8 space-y-4 p-6">
@@ -150,5 +150,5 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
         </Button>
       </div>
     </form>
-  );
+  )
 }

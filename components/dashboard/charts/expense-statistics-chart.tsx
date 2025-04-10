@@ -1,36 +1,36 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, memo } from "react";
-import { Chart, registerables } from "chart.js";
-import type { ChartData } from "@/types";
-import { useTheme } from "next-themes";
+import { useEffect, useRef, memo } from "react"
+import { Chart, registerables } from "chart.js"
+import type { ChartData } from "@/types"
+import { useTheme } from "next-themes"
 
-Chart.register(...registerables);
+Chart.register(...registerables)
 
 interface ExpenseStatisticsChartProps {
-  data: ChartData;
-  className?: string;
+  data: ChartData
+  className?: string
 }
 
 export const ExpenseStatisticsChart = memo(function ExpenseStatisticsChart({
   data,
   className,
 }: ExpenseStatisticsChartProps) {
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart | null>(null);
-  const { theme } = useTheme();
+  const chartRef = useRef<HTMLCanvasElement>(null)
+  const chartInstance = useRef<Chart | null>(null)
+  const { theme } = useTheme()
 
-  const isDarkTheme = theme === "dark";
+  const isDarkTheme = theme === "dark"
 
   useEffect(() => {
-    if (!chartRef.current) return;
+    if (!chartRef.current) return
 
     if (chartInstance.current) {
-      chartInstance.current.destroy();
+      chartInstance.current.destroy()
     }
 
-    const ctx = chartRef.current.getContext("2d");
-    if (!ctx) return;
+    const ctx = chartRef.current.getContext("2d")
+    if (!ctx) return
 
     chartInstance.current = new Chart(ctx, {
       type: "pie",
@@ -67,27 +67,27 @@ export const ExpenseStatisticsChart = memo(function ExpenseStatisticsChart({
             usePointStyle: true,
             callbacks: {
               label: (context) => {
-                const label = context.label || "";
-                const value = context.raw as number;
-                const percentage = Math.round(value);
-                return `${label}: ${percentage}%`;
+                const label = context.label || ""
+                const value = context.raw as number
+                const percentage = Math.round(value)
+                return `${label}: ${percentage}%`
               },
             },
           },
         },
       },
-    });
+    })
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy();
+        chartInstance.current.destroy()
       }
-    };
-  }, [data, isDarkTheme]);
+    }
+  }, [data, isDarkTheme])
 
   return (
     <div className={className}>
       <canvas ref={chartRef} className="chart-container" />
     </div>
-  );
-});
+  )
+})

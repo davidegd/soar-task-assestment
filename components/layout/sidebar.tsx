@@ -1,23 +1,23 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, CheckSquare, X, SunIcon, MoonIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { getNavigationItems } from "./navigation-items";
-import { useTheme } from "next-themes";
+import { useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Menu, CheckSquare, X, SunIcon, MoonIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { getNavigationItems } from "./navigation-items"
+import { useTheme } from "next-themes"
 
 interface SidebarProps {
-  className?: string;
+  className?: string
 }
 
 export function Sidebar({ className }: SidebarProps) {
-  const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const pathname = usePathname()
+  const { theme, setTheme } = useTheme()
 
-  const navItems = getNavigationItems(pathname);
+  const navItems = getNavigationItems(pathname)
 
   return (
     <div
@@ -74,14 +74,14 @@ export function Sidebar({ className }: SidebarProps) {
         </p>
       </Button>
     </div>
-  );
+  )
 }
 
 export function MobileNav() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
 
-  const navItems = getNavigationItems(pathname);
+  const navItems = getNavigationItems(pathname)
 
   return (
     <div className="md:hidden">
@@ -153,5 +153,5 @@ export function MobileNav() {
         </div>
       )}
     </div>
-  );
+  )
 }

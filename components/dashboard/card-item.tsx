@@ -1,18 +1,18 @@
-import type { Card as CardType } from "@/types";
-import { cn, formatAmount, maskCardNumber } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import CardDarkLogo from "@/assets/images/card.png";
-import CardLightLogo from "@/assets/images/card-white.png";
-import Image from "next/image";
-import CardChip from "@/assets/images/card-chip.svg";
+import type { Card as CardType } from "@/types"
+import { cn, formatAmount, maskCardNumber } from "@/lib/utils"
+import { useTheme } from "next-themes"
+import CardDarkLogo from "@/assets/images/card.png"
+import CardLightLogo from "@/assets/images/card-white.png"
+import Image from "next/image"
+import CardChip from "@/assets/images/card-chip.svg"
 interface CardItemProps {
-  card: CardType;
-  className?: string;
+  card: CardType
+  className?: string
 }
 
 export function CardItem({ card, className }: CardItemProps) {
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const { theme } = useTheme()
+  const isDarkMode = theme === "dark"
 
   const cardClass = cn(
     "relative rounded-3xl  text-white shadow-sm transition-all duration-200 min-h-60 max-h-64 flex flex-col  justify-between",
@@ -21,7 +21,7 @@ export function CardItem({ card, className }: CardItemProps) {
       "card-light": !card.isDark,
     },
     className
-  );
+  )
 
   return (
     <div className={cardClass}>
@@ -58,5 +58,5 @@ export function CardItem({ card, className }: CardItemProps) {
         />
       </div>
     </div>
-  );
+  )
 }
