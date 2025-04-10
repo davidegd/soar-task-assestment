@@ -28,7 +28,7 @@ const decodeShortUrl = (encoded: string) => {
 
     return {
       client_id: params.get("c") || "",
-      date_after: params.get("d")?.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3") || "",
+      token: params.get("t") || "",
     }
   } catch (error) {
     console.error("Error decoding:", error)
@@ -51,7 +51,7 @@ const getCategoryIcon = (category: string) => {
 export default function CreateOrderPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [decodedParams, setDecodedParams] = useState<{ client_id: any; date_after: any } | null>(
+  const [decodedParams, setDecodedParams] = useState<{ client_id: any; date_after?: any } | null>(
     null
   )
   const { isLoading: isLoadingAlegra, fetchProducts, categorizedProducts } = useAlegraProducts()
@@ -66,9 +66,10 @@ export default function CreateOrderPage() {
     if (encoded) {
       try {
         const decoded = decodeShortUrl(encoded)
+        console.log(decoded)
         if (decoded) {
-          const { client_id, date_after } = decoded
-          setDecodedParams({ client_id: client_id, date_after })
+          const { client_id } = decoded
+          setDecodedParams({ client_id: client_id })
         }
       } catch (error) {
         console.error("Invalid base64 or JSON:", error)
@@ -78,8 +79,7 @@ export default function CreateOrderPage() {
 
   const loadData = useCallback(async () => {
     try {
-      if (decodedParams && decodedParams.client_id && decodedParams.date_after)
-        await fetchProducts(decodedParams.client_id, decodedParams.date_after)
+      if (decodedParams && decodedParams.client_id) await fetchProducts(decodedParams.client_id)
     } catch (error) {
       console.error("Error loading products:", error)
       toast.error("Error loading products", {
@@ -92,29 +92,24 @@ export default function CreateOrderPage() {
     loadData()
   }, [decodedParams])
 
-  // Función para añadir o actualizar un producto en la orden
   const updateOrderItem = (product: Product, quantity: number) => {
     setOrderItems((prevItems) => {
       const existingItemIndex = prevItems.findIndex((item) => item.product.id === product.id)
 
       if (existingItemIndex >= 0) {
-        // Si el producto ya está en la orden, actualizar cantidad
         const updatedItems = [...prevItems]
 
-        // Si la cantidad es 0, eliminar el producto
         if (quantity <= 0) {
           updatedItems.splice(existingItemIndex, 1)
           return updatedItems
         }
 
-        // Actualizar cantidad
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
           quantity,
         }
         return updatedItems
       } else {
-        // Si el producto no está en la orden y la cantidad es mayor que 0, añadirlo
         if (quantity > 0) {
           return [...prevItems, { product, quantity }]
         }
@@ -123,41 +118,33 @@ export default function CreateOrderPage() {
     })
   }
 
-  // Función para incrementar la cantidad de un producto
   const incrementQuantity = (product: Product) => {
     const currentItem = orderItems.find((item) => item.product.id === product.id)
     const currentQuantity = currentItem ? currentItem.quantity : 0
-    // Usar siempre un paso de 1, independientemente de la unidad
     const newQuantity = currentQuantity + product.step
 
-    // No verificar límite de stock, permitir cualquier cantidad
     updateOrderItem(product, newQuantity)
   }
 
-  // Función para decrementar la cantidad de un producto
   const decrementQuantity = (product: Product) => {
     const currentItem = orderItems.find((item) => item.product.id === product.id)
     const currentQuantity = currentItem ? currentItem.quantity : 0
 
-    // Usar siempre un paso de 1, independientemente de la unidad
     const newQuantity = currentQuantity - product.step
 
-    // Verificar que no sea menor que 0
     if (newQuantity > 0) {
       updateOrderItem(product, newQuantity)
     } else {
-      updateOrderItem(product, 0) // Eliminar el producto si la cantidad es 0 o menor
+      updateOrderItem(product, 0)
     }
   }
 
-  // Calcular el total de la orden
   const calculateTotal = () => {
     return orderItems.reduce((total, item) => {
       return total + item.product.price * item.quantity
     }, 0)
   }
 
-  // Manejar la creación de la orden
   const handleCreateOrder = () => {
     if (orderItems.length === 0) {
       toast.error("Empty order", {
@@ -168,7 +155,6 @@ export default function CreateOrderPage() {
 
     setIsSubmitting(true)
 
-    // Simular una petición a la API
     setTimeout(() => {
       toast.success("Order created successfully", {
         description: `Order total: $${calculateTotal().toFixed(2)}`,
@@ -176,12 +162,10 @@ export default function CreateOrderPage() {
       setOrderItems([])
       setIsSubmitting(false)
 
-      // Redirigir al dashboard después de crear la orden
-      router.push("/dashboard")
+      router.push("/")
     }, 1500)
   }
 
-  // Manejar la negociación de precio
   const handleNegotiatePrice = () => {
     if (orderItems.length === 0) {
       toast.error("Empty order", {
@@ -192,7 +176,6 @@ export default function CreateOrderPage() {
 
     setIsSubmitting(true)
 
-    // Simular una petición a la API
     setTimeout(() => {
       toast.success("Negotiation request sent", {
         description: `Request sent with total: $${calculateTotal().toFixed(2)}`,
@@ -201,18 +184,16 @@ export default function CreateOrderPage() {
     }, 1500)
   }
 
-  // Obtener la cantidad actual de un producto en la orden
   const getItemQuantity = (productId: string) => {
     const item = orderItems.find((item) => item.product.id === productId)
     return item ? item.quantity : 0
   }
 
-  // Mostrar un estado de carga mientras se obtienen los datos
   if (isLoading) {
     return (
-      <div className="space-y-6 px-4">
+      <div className="space-y-10 p-6">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-12 w-full bg-neutral-200" />
+          <Skeleton className="h-14 w-full bg-neutral-200" />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -220,15 +201,15 @@ export default function CreateOrderPage() {
             <Skeleton key={i} className="h-48 rounded-xl bg-neutral-200" />
           ))}
         </div>
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-12 w-full bg-neutral-200" />
+        <div className="mt-12 flex items-center justify-between">
+          <Skeleton className="h-16 w-full bg-neutral-200" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className=" flex h-[calc(100vh-1rem)] flex-col md:h-[calc(100vh-1rem)]">
+    <div className=" flex h-[calc(100vh-1rem)] flex-col md:h-[calc(100vh)]">
       <div className=" mb-6 flex items-center justify-between p-4">
         <div>
           <h1 className="text-2xl font-bold">Crear Orden</h1>

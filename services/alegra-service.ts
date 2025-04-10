@@ -17,11 +17,14 @@ const getAuthHeader = () => {
  */
 export const getProductsFromInvoices = async (
   client_id: string,
-  date_after: string
+  date_after?: string
 ): Promise<any[]> => {
+  const today = new Date()
+  const dateAfter = new Date(today)
+  dateAfter.setDate(today.getDate() - 20)
   try {
     const response = await axios.get(
-      `${BASE_URL}invoices?client_id=${client_id}&date_after=${date_after}&limit=6`,
+      `${BASE_URL}invoices?client_id=${client_id}&date_after=${dateAfter.toISOString()}&limit=5`,
       {
         headers: {
           Authorization: getAuthHeader(),

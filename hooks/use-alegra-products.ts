@@ -11,13 +11,10 @@ interface UseAlegraProductsReturn {
   error: string | null
   products: Product[]
   categorizedProducts: Record<string, Product[]>
-  fetchProducts: (clientId: string, dateAfter: string) => Promise<Product[]>
+  fetchProducts: (clientId: string, dateAfter?: string) => Promise<Product[]>
   clearProducts: () => void
 }
 
-/**
- * Agrupa productos en solo 3 categorías: "Frutas y Verduras", "Hierbas" y "Otros"
- */
 export function groupProductsByCategory(products: Product[]): Record<string, Product[]> {
   const categories: Record<string, Product[]> = {
     "Frutas y Verduras": [],
@@ -25,7 +22,6 @@ export function groupProductsByCategory(products: Product[]): Record<string, Pro
     Otros: [],
   }
 
-  // Clasificar productos en categorías basadas en nombres
   products.forEach((product) => {
     const name = product.name.toLowerCase()
 
@@ -114,11 +110,11 @@ export function useAlegraProducts(): UseAlegraProductsReturn {
   const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = useCallback(
-    async (clientId: string, dateAfter: string): Promise<Product[]> => {
+    async (clientId: string, dateAfter?: string): Promise<Product[]> => {
       setIsLoading(true)
       setError(null)
 
-      if (!clientId || !dateAfter) {
+      if (!clientId) {
         const errorMsg = "Client ID and Date After are required"
         setError(errorMsg)
         toast.error("Missing parameters", {
@@ -153,7 +149,7 @@ export function useAlegraProducts(): UseAlegraProductsReturn {
 
         return productsWithStep
       } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : "Failed to fetch products from Alegra"
+        const errorMsg = err instanceof Error ? err.message : "Failed to fetch products"
         setError(errorMsg)
         toast.error("Error loading products", {
           description: errorMsg,
