@@ -48,7 +48,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.483.0",
     "lz-string": "^1.5.0",
-    "next": "^15.2.5",
+    "next": "15.2.8",
     "next-themes": "^0.4.6",
     "p-limit": "^6.2.0",
     "react": "^19.0.0",
